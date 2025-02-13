@@ -10,6 +10,10 @@ import java.rmi.registry.Registry;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -33,24 +37,6 @@ public class Server {
 
     }
 
-    private static void readCsv(String path) {
-        try {
-            Reader in = new FileReader(path);
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
-                .setHeader("Title", "Authors", "Description", "Category", "Publisher", "Price Starting With ($)", "Publish Date (Month)", "Publish Date (Year)")
-                .setSkipHeaderRecord(true).build().parse(in);
-
-            for (CSVRecord record : records) {
-                String column1 = record.get("Title");
-                String column2 = record.get("Authors").replace("By ", "").replace(",", "");
-                String column3 = record.get("Publish Date (Year)");
-                System.out.println(String.format("title:\t%s\nauthor:\t%s\nyear:\t%s\n\n", column1, column2, column3));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private static Connection connect() {
         try {
             return DriverManager.getConnection(URL, USER, PASS);
@@ -60,17 +46,44 @@ public class Server {
         }
     }
 
-    private static void initDb() throws SQLException {
+    private static void initDb() throws SQLException, IOException {
         var path = Paths.get("data", "BooksDatasetClean.csv").toString();
-        // var file =
-        readCsv(path);
-        // System.out.println(file.get(0));
-        // System.out.println(file.get(1));
-        // String init = readFile(Paths.get("data", "init.sql").toString());
+        String init = readFile(Paths.get("data", "init.sql").toString());
+
+        Reader in = new FileReader(path);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
+                .setHeader("Title", "Authors", "Description", "Category", "Publisher", "Price Starting With ($)",
+                        "Publish Date (Month)", "Publish Date (Year)")
+                .setSkipHeaderRecord(true).build().parse(in);
 
         try (Connection conn = connect()) {
             var stmt = conn.createStatement();
-            // stmt.execute(init);
+            // System.out.println("initdb " + stmt.execute(init));
+
+            for (CSVRecord record : records) {
+                String column1 = record.get("Title").replace("'", "");
+                String column2 = record.get("Authors").replace("By ", "").replace(",", "").replace("'", "");
+                String column3 = record.get("Publish Date (Year)");
+                String column4 = record.get("Category").trim().replace("'", "");
+                String column5 = record.get("Publisher").replace("'", "");
+
+                var categorie = Arrays.asList(column4.split(",")).stream()
+                        .map(e -> e.trim())
+                        .map(e -> String.format("'%s'", e))
+                        .collect(Collectors.joining(", "));
+
+                System.out.println(
+                        String.format("title:\t\t%s\nauthor:\t\t%s\nyear:\t\t%s\ncategory:\t%s\npublisher:\t%s\n\n",
+                                column1, column2, column3, column4, column5));
+
+                String sql = String.format(
+                        "INSERT INTO Libri (titolo, autore, editore, categoria, anno) VALUES ('%s', '%s', '%s', ARRAY[%s], %s);",
+                        column1, column2, column5, categorie, column3);
+
+                stmt.execute(sql);
+
+            }
+            
         }
 
     }
