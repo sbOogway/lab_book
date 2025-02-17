@@ -11,17 +11,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 public class Server {
-    public static String URL = "jdbc:postgresql://192.168.0.100:5432/book";
-    public static String USER = "root";
-    public static String PASS = "root";
+    public static String URL = "jdbc:postgresql://localhost:5432/book"; 
+    public static String USER = "user"; // "root"
+    public static String PASS = "pass"; // "root"
 
     private static String readFile(String path) {
         String content = "";
@@ -58,7 +56,7 @@ public class Server {
 
         try (Connection conn = connect()) {
             var stmt = conn.createStatement();
-            // System.out.println("initdb " + stmt.execute(init));
+            System.out.println("initdb " + stmt.execute(init));
 
             for (CSVRecord record : records) {
                 String column1 = record.get("Title").replace("'", "");
@@ -90,9 +88,9 @@ public class Server {
 
     public static void main(String[] args) {
         try {
-            initDb();
+            // initDb();
             System.out.println("lol");
-            rmiBook obj = new rmiBook();
+            Book obj = new Book();
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("MyRemoteObject", obj);
             System.out.println("Server is ready.");

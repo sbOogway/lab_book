@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Predicate;
@@ -146,4 +147,19 @@ public class Utils {
     public static float stringToFloat(String str) throws Exception {
         return Float.parseFloat(str);
     }
+
+    /**
+     * Looks for an item in a list.
+     *
+     * @param items list of objects where we wanna search.
+     * @param f predicate where we filter to look for a specific item.
+     * @param <T> the type of the class we want to instatiate for the list.
+     * @return a list where there are the items we looked for in the predicate.
+     */
+    static <T> List<T> cerca(List<T> items, Predicate<T> f) {
+        return items.stream()
+                .filter(f)
+                .collect(Collectors.toList());
+    }
+
 }

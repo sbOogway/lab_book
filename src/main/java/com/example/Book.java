@@ -1,8 +1,111 @@
 package com.example;
 
-import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
-public interface Book extends Remote {
-    
+public class Book extends UnicastRemoteObject implements BookInterface {
+
+    protected Book() throws RemoteException {
+        super();
+    }
+
+    /**
+     * Self descriptive.
+     */
+    private String title, authors, publisher, category;
+
+    /**
+     * Year of the book publication.
+     */
+    private short year;
+
+    /**
+     * Index of the book in the csv file. it is handy because it univocally
+     * represents a book (primary key).
+     */
+    private int index;
+
+    /**
+     * List of Review objects. @see Review
+     */
+    private List<Review> reviews;
+
+    /**
+     * Libro constructor
+     *
+     * @param title the title of the book.
+     * @param authors the authors of the book.
+     * @param publisher the publisher of the book.
+     * @param category the category of the book.
+     * @param year the publication year of the book.
+     */
+    public Book(String title, String authors, String publisher, String category, short year) throws RemoteException {
+        this.title = title;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.category = category;
+        this.year = year;
+    }
+
+    /**
+     * In category field we replace double space with single space because of
+     * first char of each line in the csv is empty.
+     *
+     * @param csvLine the csvLine read from file. we create one object for each
+     * line read in the file.
+     */
+    public Book(String csvLine) throws RemoteException {
+        String[] infos = csvLine.split(",");
+        this.index = Integer.parseInt(infos[0]);
+        this.title = infos[1];
+        this.authors = infos[2];
+        // first category char is empty
+        try {
+            this.category = infos[3].replace("  ", " ").substring(1);
+        } catch (Exception e) {
+            this.category = "";
+        }
+        this.publisher = infos[4];
+        this.year = Short.parseShort(infos[5]);
+
+    }
+
+    /**
+     * returns the Libro object to string.
+     *
+     * @return Libro object to string.
+     */
+    @Override
+    public String toString() {
+        return String.format("title:\t%s\nauths:\t%s\npubl:\t%s\ncat:\t%s\ndate:\t%d\nid:\t%d\n", this.title, this.authors, this.publisher, this.category, this.year, this.index);
+    }
+
+    /**
+     * title field getter.
+     *
+     * @return the book title.
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * author field getter.
+     *
+     * @return the book author.
+     */
+    public String getAuthor() {
+        return this.authors;
+    }
+
+    /**
+     * year field getter.
+     *
+     * @return the book publication year.
+     */
+    public short getYear() {
+        return this.year;
+    }
 
 }
