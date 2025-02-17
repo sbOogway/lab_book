@@ -4,6 +4,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
+/**
+ * Sewy
+ */
 public class Book extends UnicastRemoteObject implements BookInterface {
 
     protected Book() throws RemoteException {

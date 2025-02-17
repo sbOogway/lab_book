@@ -1,5 +1,7 @@
 package com.example;
 
+// import com.example.common;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -94,6 +96,11 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("MyRemoteObject", obj);
             System.out.println("Server is ready.");
+
+            do  {
+                System.out.println("yoyoyoyo");
+                Thread.sleep(1000);
+            } while (true);
         } catch (Exception e) {
             e.printStackTrace();
         }
