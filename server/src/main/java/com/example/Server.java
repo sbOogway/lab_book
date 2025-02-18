@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
@@ -87,11 +88,16 @@ public class Server {
             // System.out.println("Server is ready.");
 
             registry.rebind("books", books);
-            do {
-                // System.out.println("yoyoyoyo");
-                Thread.sleep(1000);
-                // System.out.println(books);
-            } while (true);
+            // while (true) {
+            //     // System.out.println("yoyoyoyo");
+            //     Thread.sleep(1000000000);
+            //     // System.out.println(books);
+            // }
+
+            Scanner s = new Scanner(System.in);
+            System.out.println("press enter to stop the server");
+            s.nextLine();
+            s.close();
 
         } catch (Exception e) {
             e.printStackTrace();

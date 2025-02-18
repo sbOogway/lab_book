@@ -21,7 +21,7 @@ public class Client extends Application {
         Registry registry = LocateRegistry.getRegistry("localhost", 1099);
         BooksInterface books = (BooksInterface) registry.lookup("books");
         System.out.println(books.get("chess"));
-        System.exit(10);
+        // System.exit(10);
 
         FXMLLoader loader = new FXMLLoader();
         FileInputStream fxml = new FileInputStream(Paths.get("resources", "home.fxml").toString());
