@@ -4,8 +4,15 @@
     -fx-border-color: black;
     -fx-border-width: 2;
     /* -fx-border-radius: 1rem; */
+    -fx-min-width: 200px;
+    -fx-min-height: 200px;
     -fx-padding: 10;
     -fx-background-color: #adecbe; /* Light gray background */
     -fx-background-insets: 5; /* Space between border and background */
     -fx-spacing: 10; /* Space between children */
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
 }

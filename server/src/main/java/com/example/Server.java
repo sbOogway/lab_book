@@ -9,9 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -19,36 +21,17 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 public class Server {
-    public static String URL = "jdbc:postgresql://localhost:5432/book"; 
-    public static String USER = "user"; // "root"
-    public static String PASS = "pass"; // "root"
 
-    private static String readFile(String path) {
-        String content = "";
+    public static String HOST = System.getenv("DB_HOST"); // "root"
+    public static String PORT = System.getenv("DB_PORT"); // "root"
+    public static String USER = System.getenv("DB_USER"); // "user"; // "root"
+    public static String PASS = System.getenv("DB_PASS");
 
-        try {
-            content = new String(Files.readAllBytes(Paths.get(path)));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // or handle the exception as needed
-        }
-
-        return content;
-
-    }
-
-    private static Connection connect() {
-        try {
-            return DriverManager.getConnection(URL, USER, PASS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    public static String URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
 
     private static void initDb() throws SQLException, IOException {
         var path = Paths.get("data", "BooksDatasetClean.csv").toString();
-        String init = readFile(Paths.get("data", "init.sql").toString());
+        String init = Utils.readFile(Paths.get("data", "init.sql").toString());
 
         Reader in = new FileReader(path);
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
@@ -56,7 +39,7 @@ public class Server {
                         "Publish Date (Month)", "Publish Date (Year)")
                 .setSkipHeaderRecord(true).build().parse(in);
 
-        try (Connection conn = connect()) {
+        try (Connection conn = Utils.connect(URL, USER, PASS)) {
             var stmt = conn.createStatement();
             System.out.println("initdb " + stmt.execute(init));
 
@@ -83,7 +66,7 @@ public class Server {
                 stmt.execute(sql);
 
             }
-            
+
         }
 
     }
@@ -91,16 +74,25 @@ public class Server {
     public static void main(String[] args) {
         try {
             // initDb();
-            System.out.println("lol");
-            Book obj = new Book();
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("MyRemoteObject", obj);
-            System.out.println("Server is ready.");
+            // System.out.println("lol");
+            Books books = new Books(URL);
 
-            do  {
-                System.out.println("yoyoyoyo");
+            // Books stub = (Books) UnicastRemoteObject.exportObject(books, 0);
+
+            System.out.println(books);
+            // System.out.println(obj.c);
+            Registry registry = LocateRegistry.createRegistry(1099);
+            // LocateRegistry.getRegistry()
+            // registry.rebind("MyRemoteObject", obj);
+            // System.out.println("Server is ready.");
+
+            registry.rebind("books", books);
+            do {
+                // System.out.println("yoyoyoyo");
                 Thread.sleep(1000);
+                // System.out.println(books);
             } while (true);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,32 +5,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="20" alignment="CENTER" prefWidth="600" prefHeight="400">
-    
-    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="10" alignment="CENTER" styleClass="vbox-style">
-        <Text text="Recommendations" />
-        <Button text="View Recommendations" />
-        <Button text="Add to Favorites" />
-    </VBox>
-    
-    <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER" styleClass="vbox-style">
-        <Text text="Genres" />
-        <Button text="Fiction" />
-        <Button text="Non-Fiction" />
-        <Button text="Mystery" />
-        <Button text="Science Fiction" />
-    </VBox>
-    
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER" styleClass="vbox-style">
-        <Text text="Search" />
-        <Button text="Search by Title" />
-        <Button text="Search by Author" />
-    </VBox>
-    
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER" styleClass="vbox-style">
-        <Text text="User Profile" />
-        <Button text="View Profile" />
-        <Button text="Edit Profile" />
-        <Button text="Logout" />
-    </VBox>
-</GridPane>
+<VBox alignment="CENTER">
+    <Text text="Book Recommender" styleClass="title"/>
+
+    <GridPane xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="20" alignment="CENTER"
+        prefWidth="600" prefHeight="400">
+
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
+            styleClass="vbox-style">
+            <Text text="Recommendations" />
+            <Button text="View Recommendations" />
+            <Button text="Add to Favorites" />
+        </VBox>
+
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
+            styleClass="vbox-style">
+            <Text text="Genres" />
+            <Button text="Fiction" />
+            <Button text="Non-Fiction" />
+            <Button text="Mystery" />
+            <Button text="Science Fiction" />
+        </VBox>
+
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
+            styleClass="vbox-style">
+            <Text text="Search" />
+            <Button text="Search by Title" />
+            <Button text="Search by Author" />
+        </VBox>
+
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
+            styleClass="vbox-style">
+            <Text text="User Profile" />
+            <Button text="View Profile" />
+            <Button text="Edit Profile" />
+            <Button text="Logout" />
+        </VBox>
+    </GridPane>
+</VBox>

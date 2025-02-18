@@ -3,19 +3,26 @@ package com.example;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+        BooksInterface books = (BooksInterface) registry.lookup("books");
+        System.out.println(books.get("chess"));
+        System.exit(10);
+
         FXMLLoader loader = new FXMLLoader();
         FileInputStream fxml = new FileInputStream(Paths.get("resources", "home.fxml").toString());
         // String cssFile = new String(Files.readAllBytes(Paths.get("resources", "style.css")));
@@ -23,7 +30,7 @@ public class Client extends Application {
         File css = new File(Paths.get("resources", "style.css").toString());
         System.out.println(css.getAbsolutePath());
         // System.out.println(cssFile);
-        GridPane root = (GridPane) loader.load(fxml);
+        VBox root = (VBox) loader.load(fxml);
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add("file://" + css.getAbsolutePath().replace("\\", "/"));
         primaryStage.setTitle("Book Recommender");

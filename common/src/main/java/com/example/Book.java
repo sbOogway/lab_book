@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -7,12 +8,7 @@ import java.util.List;
 /**
  * Sewy
  */
-public class Book extends UnicastRemoteObject implements BookInterface {
-
-    protected Book() throws RemoteException {
-        super();
-    }
-
+public class Book implements Serializable{
     /**
      * Self descriptive.
      */
@@ -43,12 +39,13 @@ public class Book extends UnicastRemoteObject implements BookInterface {
      * @param category the category of the book.
      * @param year the publication year of the book.
      */
-    public Book(String title, String authors, String publisher, String category, short year) throws RemoteException {
+    public Book(String title, String authors, String publisher, String category, short year, int id) throws RemoteException {
         this.title = title;
         this.authors = authors;
         this.publisher = publisher;
         this.category = category;
         this.year = year;
+        this.index = id;
     }
 
     /**

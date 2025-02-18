@@ -5,6 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,7 +141,7 @@ public class Utils {
     }
 
     public static int countSubs(String str, String pattern) {
-        return str.split(pattern).length-1;
+        return str.split(pattern).length - 1;
     }
 
     public static String removeParentheses(String str) {
@@ -152,8 +156,8 @@ public class Utils {
      * Looks for an item in a list.
      *
      * @param items list of objects where we wanna search.
-     * @param f predicate where we filter to look for a specific item.
-     * @param <T> the type of the class we want to instatiate for the list.
+     * @param f     predicate where we filter to look for a specific item.
+     * @param <T>   the type of the class we want to instatiate for the list.
      * @return a list where there are the items we looked for in the predicate.
      */
     static <T> List<T> cerca(List<T> items, Predicate<T> f) {
@@ -161,5 +165,23 @@ public class Utils {
                 .filter(f)
                 .collect(Collectors.toList());
     }
+
+    public static Connection connect(String url, String user, String pass) {
+        try {
+            return DriverManager.getConnection(url, user, pass);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet queryDB(Connection c, String sql) throws SQLException {
+        try (c) {
+            java.sql.Statement stmt = c.createStatement();
+            return stmt.executeQuery(sql);
+
+        }
+    }
+
 
 }
