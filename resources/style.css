@@ -1,0 +1,11 @@
+/* styles.css */
+
+.vbox-style {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    /* -fx-border-radius: 1rem; */
+    -fx-padding: 10;
+    -fx-background-color: #adecbe; /* Light gray background */
+    -fx-background-insets: 5; /* Space between border and background */
+    -fx-spacing: 10; /* Space between children */
+}
