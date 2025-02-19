@@ -16,3 +16,13 @@
     -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
+
+.main{
+    -fx-overflow-x: scroll;
+}
+
+.page{
+    -fx-min-width: 800px;
+    /* -fx-width: 800px; */
+    -fx-background-color:#adecbe;
+}

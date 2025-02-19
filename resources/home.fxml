@@ -2,46 +2,72 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.shape.Rectangle?>
 
-<VBox alignment="CENTER">
-    <Text text="Book Recommender" styleClass="title"/>
 
-    <GridPane xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="20" alignment="CENTER"
-        prefWidth="600" prefHeight="400">
+<StackPane  xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
+    <HBox fx:id="hboxMain">
 
-        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
-            styleClass="vbox-style">
-            <Text text="Recommendations" />
-            <Button text="View Recommendations" />
-            <Button text="Add to Favorites" />
+        <!-- home -->
+        <VBox fx:id="home" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" styleClass="page" >
+
+            <Text text="Book Recommender" styleClass="title" />
+
+            <GridPane xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="20" alignment="CENTER">
+
+                <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
+                    styleClass="vbox-style">
+                    <Text text="Recommendations" />
+                    <Button text="View Recommendations" />
+                    <Button text="Add to Favorites" />
+                </VBox>
+
+                <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
+                    styleClass="vbox-style">
+                    <Text text="Genres" />
+                    <Button text="Fiction" />
+                    <Button text="Non-Fiction" />
+                    <Button text="Mystery" />
+                    <Button text="Science Fiction" />
+                </VBox>
+
+                <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
+                    styleClass="vbox-style">
+                    <Text text="Search" />
+                    <TextField fx:id="query" promptText="query by title" />
+                    <Button text="Search by Title" onAction="#handleTextArea" />
+                    <Button text="Search by Author" />
+                </VBox>
+
+                <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
+                    styleClass="vbox-style">
+                    <Text text="User Profile" />
+                    <Button text="View Profile" />
+                    <Button text="Edit Profile" />
+                    <Button text="Logout" />
+                </VBox>
+            </GridPane>
         </VBox>
-
-        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
-            styleClass="vbox-style">
-            <Text text="Genres" />
-            <Button text="Fiction" />
-            <Button text="Non-Fiction" />
-            <Button text="Mystery" />
-            <Button text="Science Fiction" />
+        <!-- query -->
+        <VBox xmlns:fx="http://javafx.com/fxml" spacing="10" alignment="CENTER" prefWidth="300"
+            prefHeight="400" styleClass="page">
+            <Label text="Query Results" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <ListView fx:id="bookQuery" prefWidth="250" prefHeight="300">
+                <!-- You can add ListView items dynamically in your controller -->
+            </ListView>
         </VBox>
+        <!-- login -->
+        <VBox>
 
-        <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER"
-            styleClass="vbox-style">
-            <Text text="Search" />
-            <TextField fx:id="query" promptText="query by title"/>
-            <Button text="Search by Title" />
-            <Button text="Search by Author" />
         </VBox>
-
-        <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER"
-            styleClass="vbox-style">
-            <Text text="User Profile" />
-            <Button text="View Profile" />
-            <Button text="Edit Profile" />
-            <Button text="Logout" />
-        </VBox>
-    </GridPane>
-</VBox>
+    </HBox>
+</StackPane>

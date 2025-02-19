@@ -1,41 +1,60 @@
 package com.example;
 
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Paths;
-import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Client extends Application {
+    public static BooksInterface books;
+    // public static VBox root;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-        BooksInterface books = (BooksInterface) registry.lookup("books");
-        System.out.println(books.get("chess"));
-        // System.exit(10);
+    public void start(Stage stage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader();
-        FileInputStream fxml = new FileInputStream(Paths.get("resources", "home.fxml").toString());
-        // String cssFile = new String(Files.readAllBytes(Paths.get("resources", "style.css")));
+        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+        books = (BooksInterface) registry.lookup("books");
 
         File css = new File(Paths.get("resources", "style.css").toString());
         System.out.println(css.getAbsolutePath());
+            
+        // Parent root = FXMLLoader.load(getClass().getResource("file:///home/oogway/uni/lab_b/resources/home.fxml")); 
+
         // System.out.println(cssFile);
-        VBox root = (VBox) loader.load(fxml);
-        Scene scene = new Scene(root, 800, 600);
+        
+        // Controller.loader.setRoot(Controller.getFxml("query.fxml"));
+        StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("home.fxml"));
+        // VBox QueryRroot = (VBox) Controller.loader.load(Controller.getFxml("query.fxml"));
+        
+        
+        Scene scene = new Scene(homeRoot, 800, 600);
         scene.getStylesheets().add("file://" + css.getAbsolutePath().replace("\\", "/"));
-        primaryStage.setTitle("Book Recommender");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("Book Recommender");
+        stage.setScene(scene);
+        stage.show();
+
+        // Controller c = new Controller();
+        
+
+        // Thread.sleep(1000);
+
+        // root = Controller.loader.load(Controller.getFxml("query.fxml"));
+        // scene = new Scene(root, 800, 600);
+        // scene.getStylesheets().add("file://" + css.getAbsolutePath().replace("\\", "/"));
+        // primaryStage.setTitle("Book Recommender");
+        // primaryStage.setScene(scene);
+        // primaryStage.show();
     }
 
     public static void main(String[] args) {
