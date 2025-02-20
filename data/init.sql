@@ -18,6 +18,7 @@ CREATE TABLE Librerie (
     id SERIAL PRIMARY KEY,
     nome_libreria VARCHAR(100) NOT NULL,
     userid INT NOT NULL,
+    libri INT[],
     FOREIGN KEY (userid) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE
 );
 

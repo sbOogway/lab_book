@@ -64,6 +64,8 @@ public class Controller {
     private Button buttonSignup;
     @FXML
     private Button buttonQuery;
+    @FXML
+    private Button buttonLibrary;
 
     @FXML
     private VBox vboxQuery;
@@ -73,6 +75,8 @@ public class Controller {
     private VBox vboxSignup;
     @FXML
     private VBox vboxBook;
+    @FXML
+    private VBox vboxLibrary;
 
     @FXML
     private Button buttonQueryAuthor;
@@ -112,12 +116,14 @@ public class Controller {
         pages.add(vboxLogin);
         pages.add(vboxSignup);
         pages.add(vboxBook);
+        pages.add(vboxLibrary);
 
         // home.setPrefWidth(120);
 
         viewPage(buttonQuery, vboxQuery);
         viewPage(buttonLogin, vboxLogin);
         viewPage(buttonSignup, vboxSignup);
+        viewPage(buttonLibrary, vboxLibrary);
 
         System.out.println("init controller");
 
