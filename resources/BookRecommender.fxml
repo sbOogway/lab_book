@@ -95,46 +95,58 @@
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
          </VBox>
-         <VBox fx:id="vboxSignup" opacity="0.0" prefHeight="400.0" prefWidth="800.0">
+         <VBox fx:id="vboxSignup" opacity="0.0" prefHeight="400.0" prefWidth="800.0" spacing="10">
             <children>
-               <HBox prefHeight="35.0" prefWidth="200.0" spacing="10.0" translateY="180.0">
+               <HBox prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                   <children>
                      <Label prefHeight="35.0" prefWidth="75.0" text="username" />
-                     <TextField prefHeight="35.0" text="test 2" />
-                     <Button mnemonicParsing="false" prefHeight="35.0" text="signup" />
+                     <TextField fx:id="usernameSignup" prefHeight="35.0" text="test 2" />
+                     
                   </children>
                </HBox>
                <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0"
                   spacing="10.0"
-                  translateY="10.0">
+                  >
                   <children>
-                     <Label prefHeight="35.0" prefWidth="75.0" text="username" />
-                     <TextField prefHeight="35.0" text="test 2" />
+                     <Label prefHeight="35.0" prefWidth="75.0" text="nome" />
+                     <TextField fx:id="nomeSignup" prefHeight="35.0" text="test 2" />
                   </children>
                </HBox>
                <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0"
                   spacing="10.0"
-                  translateY="20.0">
+                  >
                   <children>
-                     <Label prefHeight="35.0" prefWidth="75.0" text="username" />
-                     <TextField prefHeight="35.0" text="test 2" />
+                     <Label prefHeight="35.0" prefWidth="75.0" text="cognome" />
+                     <TextField fx:id="cognomeSignup" prefHeight="35.0" text="test 2" />
                   </children>
                </HBox>
                <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0"
                   spacing="10.0"
-                  translateY="30.0">
+                  >
                   <children>
-                     <Label prefHeight="35.0" prefWidth="75.0" text="username" />
-                     <TextField prefHeight="35.0" text="test 2" />
+                     <Label prefHeight="35.0" prefWidth="75.0" text="codice fiscale" />
+                     <TextField fx:id="codiceFiscaleSignup" prefHeight="35.0" text="test 2" />
+                  </children>
+               </HBox>
+               <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0"
+                  spacing="10.0"
+                  >
+                  <children>
+                     <Label prefHeight="35.0" prefWidth="75.0" text="email" />
+                     <TextField fx:id="emailSignup" prefHeight="35.0" text="test 2" />
+                  </children>
+               </HBox>
+               <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0"
+                  spacing="10.0"
+                  >
+                  <children>
+                     <Label prefHeight="35.0" prefWidth="75.0" text="password" />
+                     <PasswordField fx:id="passwordSignup" prefHeight="35.0" text="test 2" />
+                     <Button fx:id="submitSignup" mnemonicParsing="false" prefHeight="35.0" text="signup" />
                   </children>
                </HBox>
             </children>
-            <opaqueInsets>
-               <Insets />
-            </opaqueInsets>
-            <cursor>
-               <Cursor fx:constant="NONE" />
-            </cursor>
+            
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>

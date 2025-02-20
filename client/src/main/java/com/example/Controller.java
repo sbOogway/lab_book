@@ -29,13 +29,23 @@ public class Controller {
     private Scene scene;
     private Parent root;
 
-    public Controller() {
-    }
-
     @FXML
     private PasswordField passwordLogin;
     @FXML
     private TextField userLogin;
+
+    @FXML
+    private TextField usernameSignup;
+    @FXML
+    private TextField nomeSignup;
+    @FXML
+    private TextField cognomeSignup;
+    @FXML
+    private TextField codiceFiscaleSignup;
+    @FXML
+    private TextField emailSignup;
+    @FXML
+    private TextField passwordSignup;
 
     @FXML
     private Label labelLoginStatus;
@@ -82,6 +92,8 @@ public class Controller {
 
     @FXML
     private Button submitLogin;
+    @FXML
+    private Button submitSignup;
 
     private List<VBox> pages = new ArrayList<VBox>();
 
@@ -125,6 +137,7 @@ public class Controller {
             }
         });
 
+        // login
         submitLogin.setOnAction(e -> {
             try {
                 if (Client.users.login(userLogin.getText(), passwordLogin.getText())) {
@@ -139,6 +152,26 @@ public class Controller {
                     System.out.println("failed login");
                 }
 
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        // signup
+        submitSignup.setOnAction(e -> {
+            try {
+                Client.users.add(
+                        usernameSignup.getText(),
+                        passwordSignup.getText(),
+                        codiceFiscaleSignup.getText(),
+                        emailSignup.getText(),
+                        nomeSignup.getText(),
+                        cognomeSignup.getText());
+                
+                pages.forEach(el -> {
+                    el.opacityProperty().set(0);
+                });
+                vboxLogin.opacityProperty().set(1);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
