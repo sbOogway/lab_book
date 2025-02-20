@@ -36,7 +36,7 @@ public class Client extends Application {
         // System.out.println(cssFile);
         
         // Controller.loader.setRoot(Controller.getFxml("query.fxml"));
-        StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("BookRecommender.fxml"));
+        StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("v2.fxml"));
         // VBox QueryRroot = (VBox) Controller.loader.load(Controller.getFxml("query.fxml"));
         
         

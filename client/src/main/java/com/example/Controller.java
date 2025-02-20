@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 public class Controller {
     public static FXMLLoader loader = new FXMLLoader();
+    private boolean login = false;
 
     public Stage stage;
     private Scene scene;
@@ -107,6 +108,7 @@ public class Controller {
                 e.opacityProperty().set(0);
             });
             page.opacityProperty().set(1);
+            page.toFront();
         });
     }
 
@@ -153,6 +155,8 @@ public class Controller {
                         el.opacityProperty().set(0);
                     });
                     vboxQuery.opacityProperty().set(1);
+                    vboxQuery.toFront();
+                    login = true;
 
                 } else {
                     System.out.println("failed login");
@@ -178,6 +182,7 @@ public class Controller {
                     el.opacityProperty().set(0);
                 });
                 vboxLogin.opacityProperty().set(1);
+                vboxLogin.toFront();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -187,6 +192,9 @@ public class Controller {
 
     @FXML
     private void handleQuery(String mode) throws Exception {
+        while (!bookQuery.getItems().isEmpty()) {
+            bookQuery.getItems().removeFirst();
+        }
         // bookQuery.getItems().removeAll();
         // System.out.println(query.getText());
         var books = Client.books.get(query.getText(), mode);
@@ -198,11 +206,13 @@ public class Controller {
             HBox box = new HBox();
 
             Button btn = new Button("view book");
+            
             btn.setOnAction(evt -> {
                 pages.forEach(e -> {
                     e.opacityProperty().set(0);
                 });
                 vboxBook.opacityProperty().set(1);
+                vboxBook.toFront();
                 labelBookTitle.setText(b.getTitle());
                 labelBookAuthor.setText(b.getAuthor());
                 labelBookCategory.setText(b.getCategory());
@@ -210,7 +220,16 @@ public class Controller {
                 labelBookYear.setText(Short.toString(b.getYear()));
 
             });
+            
             box.getChildren().addAll(new Label(b.toString()), btn);
+            
+            if (login) {
+                Button atl = new Button("add to library");
+                atl.setOnAction(e -> {
+
+                });
+                box.getChildren().addAll(atl);
+            }
 
             bookQuery.getItems().add(box);
         });

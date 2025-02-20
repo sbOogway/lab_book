@@ -173,11 +173,8 @@
                            <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="Year" />
                            <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
                               text="Publisher" />
-                           <Button mnemonicParsing="false" text="add review" translateY="180.0">
-                              <VBox.margin>
-                                 <Insets />
-                              </VBox.margin>
-                           </Button>
+                           <Button mnemonicParsing="false" text="add review" translateY="180.0"/>
+                           <Button mnemonicParsing="false" text="add to library" translateY="180.0"/>
                         </children>
                      </VBox>
                      <ListView prefWidth="200.0" />
