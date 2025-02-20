@@ -4,7 +4,8 @@
 
 -- Creazione della tabella UtentiRegistrati
 CREATE TABLE UtentiRegistrati (
-    userid SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    userid VARCHAR(100) UNIQUE NOT NULL,
     nome VARCHAR(100) NOT NULL,
     cognome VARCHAR(100) NOT NULL,
     codice_fiscale VARCHAR(16) UNIQUE NOT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE Librerie (
     id SERIAL PRIMARY KEY,
     nome_libreria VARCHAR(100) NOT NULL,
     userid INT NOT NULL,
-    FOREIGN KEY (userid) REFERENCES UtentiRegistrati(userid) ON DELETE CASCADE
+    FOREIGN KEY (userid) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE
 );
 
 -- Creazione della tabella Libri
@@ -43,7 +44,7 @@ CREATE TABLE ValutazioniLibri (
     voto_finale INT CHECK (voto_finale BETWEEN 1 AND 5),
     note VARCHAR(256),
     FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE,
-    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(userid) ON DELETE CASCADE
+    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE
 );
 
 -- Creazione della tabella ConsigliLibri
@@ -53,7 +54,7 @@ CREATE TABLE ConsigliLibri (
     utente_id INT NOT NULL,
     libro_suggerito_id INT NOT NULL,
     FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE,
-    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(userid) ON DELETE CASCADE,
+    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE,
     FOREIGN KEY (libro_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE
 );
 
@@ -73,3 +74,8 @@ CREATE TABLE ValutazioniAggregate (
 CREATE INDEX idx_libro_autore ON Libri(autore);
 CREATE INDEX idx_valutazioni_libro ON ValutazioniLibri(libro_id);
 CREATE INDEX idx_consigli_libro ON ConsigliLibri(libro_id);
+
+INSERT INTO UtentiRegistrati 
+(userid, nome, cognome, codice_fiscale, email, password)
+VALUES 
+('matia', 'mattia', 'papaccioli', 'ppp', 'ppp', '1234');

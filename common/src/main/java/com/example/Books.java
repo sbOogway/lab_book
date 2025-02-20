@@ -43,7 +43,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     }
 
     public List<Book> get(String query, String mode) {
-        Utils.log("client query -> " + query);
+        Utils.log("client book query -> " + query);
         if (mode.equals("t")) {
             return Utils.cerca(this.c, book -> book.getTitle().contains(query));
         }

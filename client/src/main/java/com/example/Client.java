@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 public class Client extends Application {
     public static BooksInterface books;
+    public static UsersInterface users;
     // public static VBox root;
 
     @Override
@@ -25,6 +26,7 @@ public class Client extends Application {
 
         Registry registry = LocateRegistry.getRegistry("localhost", 1099);
         books = (BooksInterface) registry.lookup("books");
+        users = (UsersInterface) registry.lookup("users");
 
         File css = new File(Paths.get("resources", "style.css").toString());
         System.out.println(css.getAbsolutePath());

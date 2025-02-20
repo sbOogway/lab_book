@@ -59,12 +59,22 @@ public class Controller {
     @FXML
     private Button buttonQueryTitle;
 
+    @FXML 
+    private Label labelBookTitle;
+    @FXML 
+    private Label labelBookAuthor;
+    @FXML 
+    private Label labelBookCategory;
+    @FXML 
+    private Label labelBookYear;
+    @FXML 
+    private Label labelBookPublisher;
+
     private List<VBox> pages = new ArrayList<VBox>();
 
     private void viewPage(Button btn, VBox page) {
         btn.setOnAction(event -> {
             pages.forEach(e -> {
-                System.out.println(e);
                 e.opacityProperty().set(0);
             });
             page.opacityProperty().set(1);
@@ -85,7 +95,7 @@ public class Controller {
         viewPage(buttonSignup, vboxSignup);
 
         System.out.println("init controller");
-        
+
         buttonQueryTitle.setOnAction(e -> {
             try {
                 handleQuery("t");
@@ -115,10 +125,28 @@ public class Controller {
 
         books.stream().forEach(b -> {
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(b.toString()), new Button());
+
+            Button btn = new Button("view book");
+            btn.setOnAction(evt -> {
+                pages.forEach(e -> {
+                    e.opacityProperty().set(0);
+                });
+                vboxBook.opacityProperty().set(1); 
+                labelBookTitle.setText(b.getTitle());
+                labelBookAuthor.setText(b.getAuthor());
+                labelBookCategory.setText(b.getCategory());
+                labelBookPublisher.setText(b.getPublisher());
+                labelBookYear.setText(Short.toString(b.getYear()));
+
+            });
+            box.getChildren().addAll(new Label(b.toString()), btn);
 
             bookQuery.getItems().add(box);
         });
+    }
+
+    private void handleLogin() throws Exception {
+        
     }
 
     public static FileInputStream getFxml(String name) throws FileNotFoundException {

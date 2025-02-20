@@ -75,24 +75,15 @@ public class Server {
     public static void main(String[] args) {
         try {
             // initDb();
-            // System.out.println("lol");
+
             Books books = new Books(URL);
+            Users users = new Users(URL);
 
-            // Books stub = (Books) UnicastRemoteObject.exportObject(books, 0);
 
-            System.out.println(books);
-            // System.out.println(obj.c);
             Registry registry = LocateRegistry.createRegistry(1099);
-            // LocateRegistry.getRegistry()
-            // registry.rebind("MyRemoteObject", obj);
-            // System.out.println("Server is ready.");
 
             registry.rebind("books", books);
-            // while (true) {
-            //     // System.out.println("yoyoyoyo");
-            //     Thread.sleep(1000000000);
-            //     // System.out.println(books);
-            // }
+            registry.rebind("users", users);
 
             Scanner s = new Scanner(System.in);
             System.out.println("press enter to stop the server");

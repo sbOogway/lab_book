@@ -149,15 +149,11 @@
                   <children>
                      <VBox prefHeight="200.0" prefWidth="200.0">
                         <children>
-                           <Label text="Title">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
-                           </Label>
-                           <Label text="Author" />
-                           <Label text="Category" />
-                           <Label layoutX="10.0" layoutY="10.0" text="Year" />
-                           <Label layoutX="10.0" layoutY="10.0" text="Publisher" />
+                           <Label fx:id="labelBookTitle" text="Title" style="-fx-font-size: 18px;"/>
+                           <Label fx:id="labelBookAuthor" text="Author" />
+                           <Label fx:id="labelBookCategory" text="Category" />
+                           <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="Year" />
+                           <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0" text="Publisher" />
                            <Button mnemonicParsing="false" text="add review" translateY="180.0">
                               <VBox.margin>
                                  <Insets />
