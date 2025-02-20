@@ -3,6 +3,7 @@ package com.example;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,6 +31,14 @@ public class Controller {
 
     public Controller() {
     }
+
+    @FXML
+    private PasswordField passwordLogin;
+    @FXML
+    private TextField userLogin;
+
+    @FXML
+    private Label labelLoginStatus;
 
     @FXML
     private ListView<HBox> bookQuery;
@@ -59,16 +69,19 @@ public class Controller {
     @FXML
     private Button buttonQueryTitle;
 
-    @FXML 
+    @FXML
     private Label labelBookTitle;
-    @FXML 
+    @FXML
     private Label labelBookAuthor;
-    @FXML 
+    @FXML
     private Label labelBookCategory;
-    @FXML 
+    @FXML
     private Label labelBookYear;
-    @FXML 
+    @FXML
     private Label labelBookPublisher;
+
+    @FXML
+    private Button submitLogin;
 
     private List<VBox> pages = new ArrayList<VBox>();
 
@@ -112,6 +125,25 @@ public class Controller {
             }
         });
 
+        submitLogin.setOnAction(e -> {
+            try {
+                if (Client.users.login(userLogin.getText(), passwordLogin.getText())) {
+                    System.out.println("succesfull login");
+                    labelLoginStatus.setText(userLogin.getText());
+                    pages.forEach(el -> {
+                        el.opacityProperty().set(0);
+                    });
+                    vboxQuery.opacityProperty().set(1);
+
+                } else {
+                    System.out.println("failed login");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
     }
 
     @FXML
@@ -131,7 +163,7 @@ public class Controller {
                 pages.forEach(e -> {
                     e.opacityProperty().set(0);
                 });
-                vboxBook.opacityProperty().set(1); 
+                vboxBook.opacityProperty().set(1);
                 labelBookTitle.setText(b.getTitle());
                 labelBookAuthor.setText(b.getAuthor());
                 labelBookCategory.setText(b.getCategory());
@@ -146,7 +178,7 @@ public class Controller {
     }
 
     private void handleLogin() throws Exception {
-        
+
     }
 
     public static FileInputStream getFxml(String name) throws FileNotFoundException {

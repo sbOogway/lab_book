@@ -10,12 +10,17 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
     ArrayList<User> c = new ArrayList<>();
 
     public Users(String dbUrl) throws RemoteException {
-        String sql = "SELECT * FROM libri;";
+        String sql = "SELECT * FROM utentiregistrati;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {
+                var userid = rs.getString("userid");
+                var password = rs.getString("password");
+
+                User b = new User("", "", "", "", userid, password);
+                add(b);
 
             }
         } catch (SQLException e){
