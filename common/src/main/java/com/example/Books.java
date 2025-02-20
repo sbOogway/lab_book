@@ -42,9 +42,15 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         this.c.add(b);
     }
 
-    public List<Book> get(String query) {
+    public List<Book> get(String query, String mode) {
         Utils.log("client query -> " + query);
-        return Utils.cerca(this.c, book -> book.getTitle().contains(query));
+        if (mode.equals("t")) {
+            return Utils.cerca(this.c, book -> book.getTitle().contains(query));
+        }
+        if (mode.equals("a")) {
+            return Utils.cerca(this.c, book -> book.getAuthor().contains(query));
+        }
+        return null;
     }
 
     @Override

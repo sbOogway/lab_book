@@ -2,7 +2,6 @@ package com.example;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 /**
@@ -78,7 +77,7 @@ public class Book implements Serializable{
      */
     @Override
     public String toString() {
-        return String.format("title:\t%s\nauths:\t%s\npubl:\t%s\ncat:\t%s\ndate:\t%d\nid:\t%d\n", this.title, this.authors, this.publisher, this.category, this.year, this.index);
+        return String.format("title:\t%s\nauths:\t%s\npubl:\t%s\ncat:\t%s\ndate:\t%d\nid:\t%d\n     <Button text=\"Click Me!\" onAction=\"#handleButtonClick\"/>", this.title, this.authors, this.publisher, this.category, this.year, this.index);
     }
 
     /**
