@@ -1,12 +1,13 @@
 package com.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A class that represents a user.
  */
-public class User {
+public class User implements Serializable {
 
     /**
      * Basic user information. Each field is self descriptive.

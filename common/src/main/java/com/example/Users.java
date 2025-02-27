@@ -4,7 +4,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Users extends UnicastRemoteObject implements UsersInterface {
     ArrayList<User> c = new ArrayList<>();
@@ -19,8 +22,34 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
             while (rs.next()) {
                 var userid = rs.getString("userid");
                 var password = rs.getString("password");
+                var id = rs.getInt("id");
 
                 User b = new User("", "", "", "", userid, password);
+
+                var c2 = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+                var libs = Utils.queryDB(c2, String.format("select * from librerie where userid = %d;", id));
+                List<Library> userLibs = new ArrayList<Library>();
+                while (libs.next()) {
+                    var libri = libs.getArray("libri");
+
+                    var stream = Arrays.stream(libri.toString().split(","))
+                            .map(e -> e.replace("{", ""))
+                            .map(e -> e.replace("}", ""))
+                            .map(e -> Integer.parseInt(e))
+                            .collect(Collectors.toList());
+
+                    // System.out.println(libri[0]);
+                    System.out.println(stream);
+                    System.out.println(stream.size());
+
+                    Library lib = new Library(libs.getString("nome_libreria"), stream);
+                    userLibs.add(lib);
+
+                }
+                b.setLibrary(userLibs);
+
+                System.out.println(userLibs);
+
                 add(b);
 
             }

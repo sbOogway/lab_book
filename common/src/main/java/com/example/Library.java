@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * A class that represent a library. Each library is a list of books that a user puts together for various purposes.
  */
-public class Library {
+public class Library implements Serializable {
 
 	/**
 	 * The name that the user gives to the library.
@@ -39,6 +40,11 @@ public class Library {
 		this.nome = infos[1];
 		String[] bs = Arrays.copyOfRange(infos, 2, infos.length);
 		this.books = Arrays.stream(bs).map(x -> Integer.parseInt(x)).collect(Collectors.toList()); 
+	}
+
+	public Library(String name, List<Integer> bookids) {
+		this.nome = name;
+		this.books = bookids;
 	}
 	
 	/**

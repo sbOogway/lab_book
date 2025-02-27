@@ -80,3 +80,9 @@ INSERT INTO UtentiRegistrati
 (userid, nome, cognome, codice_fiscale, email, password)
 VALUES 
 ('matia', 'mattia', 'papaccioli', 'ppp', 'ppp', '1234');
+
+INSERT INTO Librerie 
+(nome_libreria, userid, libri)
+VALUES
+('test1', 1, ARRAY[1, 2, 3]),
+('test2', 1, ARRAY[4, 5, 7]);

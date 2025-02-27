@@ -12,10 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller">
    <!-- need to add vbox here -->
    <children>
-      <ToolBar maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" StackPane.alignment="TOP_CENTER">
+      <ToolBar maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0"
+         StackPane.alignment="TOP_CENTER">
          <items>
             <Label text="Book Recommender">
                <font>
@@ -24,13 +27,18 @@
             </Label>
             <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label fx:id="labelLoginStatus" alignment="CENTER_RIGHT" minWidth="100.0" prefHeight="25.0" text="not logged in" textAlignment="RIGHT" />
+                  <Label fx:id="labelLoginStatus" alignment="CENTER_RIGHT" minWidth="100.0"
+                     prefHeight="25.0" text="not logged in" textAlignment="RIGHT" />
                   <!-- <Button fx:id="buttonHome" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
                      minWidth="-Infinity" mnemonicParsing="false" text="home" /> -->
-                  <Button fx:id="buttonLogin" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="48.0" text="login" />
-                  <Button fx:id="buttonQuery" minWidth="-Infinity" mnemonicParsing="false" text="query" />
-                  <Button fx:id="buttonSignup" minWidth="-Infinity" mnemonicParsing="false" text="signup" />
-                  <Button fx:id="buttonLibrary" minWidth="-Infinity" mnemonicParsing="false" text="libraries" />
+                  <Button fx:id="buttonLogin" minWidth="-Infinity" mnemonicParsing="false"
+                     prefHeight="25.0" prefWidth="48.0" text="login" />
+                  <Button fx:id="buttonQuery" minWidth="-Infinity" mnemonicParsing="false"
+                     text="query" />
+                  <Button fx:id="buttonSignup" minWidth="-Infinity" mnemonicParsing="false"
+                     text="signup" />
+                  <Button fx:id="buttonLibrary" minWidth="-Infinity" mnemonicParsing="false"
+                     text="libraries" />
                </children>
                <padding>
                   <Insets top="5.0" />
@@ -38,14 +46,16 @@
             </HBox>
          </items>
       </ToolBar>
-      <VBox fx:id="vboxLibrary" alignment="BASELINE_CENTER" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="295.0" prefWidth="800.0">
+      <VBox fx:id="vboxLibrary" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="295.0" prefWidth="800.0">
          <children>
             <ListView fx:id="listViewLibrary" prefHeight="375.0" prefWidth="800.0">
-               </ListView>
+            </ListView>
 
-                     </children>
+         </children>
       </VBox>
-      <VBox fx:id="vboxBook" alignment="BOTTOM_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="321.0" prefWidth="800.0">
+      <VBox fx:id="vboxBook" alignment="BOTTOM_CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         prefHeight="321.0" prefWidth="800.0">
          <children>
             <HBox alignment="BASELINE_CENTER" prefHeight="350.0" prefWidth="735.0">
                <children>
@@ -55,7 +65,8 @@
                         <Label fx:id="labelBookAuthor" text="Author" />
                         <Label fx:id="labelBookCategory" text="Category" />
                         <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="Year" />
-                        <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0" text="Publisher" />
+                        <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
+                           text="Publisher" />
                         <Button mnemonicParsing="false" text="add review" translateY="180.0">
                            <VBox.margin>
                               <Insets />
@@ -71,77 +82,83 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox fx:id="vboxQuery" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="350.0" prefWidth="800.0">
+      <VBox fx:id="vboxQuery" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0" prefHeight="350.0" prefWidth="800.0">
          <children>
 
-               <VBox prefHeight="290.0" prefWidth="780.0">
+            <VBox prefHeight="290.0" prefWidth="780.0">
                <Label text="Look for a book" />
                <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
                   <children>
                      <TextField fx:id="query" prefWidth="560.0" text="book query" />
 
-                        <Label prefHeight="25.0" text="look by" />
-                     <Button fx:id="buttonQueryTitle" mnemonicParsing="false" prefWidth="75.0" text="title" />
-                     <Button fx:id="buttonQueryAuthor" maxWidth="75.0" mnemonicParsing="false" prefWidth="75.0" text="author" />
+                     <Label prefHeight="25.0" text="look by" />
+                     <Button fx:id="buttonQueryTitle" mnemonicParsing="false" prefWidth="75.0"
+                        text="title" />
+                     <Button fx:id="buttonQueryAuthor" maxWidth="75.0" mnemonicParsing="false"
+                        prefWidth="75.0" text="author" />
 
-                     </children>
+                  </children>
                </HBox>
                <ListView fx:id="bookQuery" prefHeight="300" prefWidth="500.0" />
 
-   
-               </VBox>
+
+            </VBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox fx:id="vboxSignup" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="279.0" prefWidth="800.0" spacing="10">
+      <VBox fx:id="vboxSignup" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0"
+         prefHeight="279.0" prefWidth="800.0" spacing="10">
          <children>
-            <HBox alignment="BASELINE_CENTER" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="username" />
-                  <TextField fx:id="usernameSignup" prefHeight="35.0" text="test 2" />
+                  <TextField fx:id="usernameSignup" prefHeight="35.0" text="" />
 
-                        </children>
+               </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="nome" />
-                  <TextField fx:id="nomeSignup" prefHeight="35.0" text="test 2" />
+                  <TextField fx:id="nomeSignup" prefHeight="35.0" text="" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="cognome" />
-                  <TextField fx:id="cognomeSignup" prefHeight="35.0" text="test 2" />
+                  <TextField fx:id="cognomeSignup" prefHeight="35.0" text="" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="codice fiscale" />
-                  <TextField fx:id="codiceFiscaleSignup" prefHeight="35.0" text="test 2" />
+                  <TextField fx:id="codiceFiscaleSignup" prefHeight="35.0" text="" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="email" />
-                  <TextField fx:id="emailSignup" prefHeight="35.0" text="test 2" />
+                  <TextField fx:id="emailSignup" prefHeight="35.0" text="" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="password" />
-                  <PasswordField fx:id="passwordSignup" prefHeight="35.0" text="test 2" />
-                  <Button fx:id="submitSignup" mnemonicParsing="false" prefHeight="35.0" text="signup" />
+                  <PasswordField fx:id="passwordSignup" prefHeight="35.0" text="" />
+                  <Button fx:id="submitSignup" mnemonicParsing="false" prefHeight="35.0"
+                     text="signup" />
                </children>
             </HBox>
          </children>
 
-                  <padding>
+         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox fx:id="vboxLogin" alignment="BASELINE_CENTER" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="128.0" prefWidth="800.0" spacing="10.0">
+      <VBox fx:id="vboxLogin" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="128.0" prefWidth="800.0" spacing="10.0">
          <children>
             <HBox prefHeight="35.0" prefWidth="400.0" spacing="10.0">
                <children>

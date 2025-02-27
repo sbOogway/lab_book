@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 public class Controller {
     public static FXMLLoader loader = new FXMLLoader();
     private boolean login = false;
+    private String user = "";
 
     public Stage stage;
     private Scene scene;
@@ -53,6 +54,8 @@ public class Controller {
 
     @FXML
     private ListView<HBox> bookQuery;
+    @FXML
+    private ListView<HBox> listViewLibrary;
 
     @FXML
     private TextField query;
@@ -157,6 +160,7 @@ public class Controller {
                     vboxQuery.opacityProperty().set(1);
                     vboxQuery.toFront();
                     login = true;
+                    user = userLogin.getText();
 
                 } else {
                     System.out.println("failed login");
@@ -166,7 +170,7 @@ public class Controller {
                 ex.printStackTrace();
             }
         });
-        
+
         // signup
         submitSignup.setOnAction(e -> {
             try {
@@ -177,7 +181,7 @@ public class Controller {
                         emailSignup.getText(),
                         nomeSignup.getText(),
                         cognomeSignup.getText());
-                
+
                 pages.forEach(el -> {
                     el.opacityProperty().set(0);
                 });
@@ -185,6 +189,32 @@ public class Controller {
                 vboxLogin.toFront();
             } catch (Exception ex) {
                 ex.printStackTrace();
+            }
+        });
+
+        buttonLibrary.setOnAction(e -> {
+            try {
+                var libs = Client.users.get(user).get(0).getLibs();
+
+                libs.stream().forEach(l -> {
+                    HBox box = new HBox();
+
+                    Button btn = new Button("view lib");
+
+                    box.getChildren().addAll(new Label(l.getName()), btn);
+
+                    listViewLibrary.getItems().add(box);
+
+                });
+
+                pages.forEach(el -> {
+                    el.opacityProperty().set(0);
+                });
+                vboxLibrary.opacityProperty().set(1);
+                vboxLibrary.toFront();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();// TODO: handle exception
             }
         });
 
@@ -206,7 +236,7 @@ public class Controller {
             HBox box = new HBox();
 
             Button btn = new Button("view book");
-            
+
             btn.setOnAction(evt -> {
                 pages.forEach(e -> {
                     e.opacityProperty().set(0);
@@ -220,9 +250,9 @@ public class Controller {
                 labelBookYear.setText(Short.toString(b.getYear()));
 
             });
-            
+
             box.getChildren().addAll(new Label(b.toString()), btn);
-            
+
             if (login) {
                 Button atl = new Button("add to library");
                 atl.setOnAction(e -> {
