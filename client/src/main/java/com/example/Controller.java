@@ -62,6 +62,8 @@ public class Controller {
     private ListView<HBox> bookQuery;
     @FXML
     private ListView<HBox> listViewLibrary;
+    @FXML
+    private ListView<HBox> userViewLibrary;
 
     @FXML
     private ListView<HBox> bookQueryLib;
@@ -100,6 +102,8 @@ public class Controller {
     private VBox vboxLibrary;
     @FXML
     private VBox vboxCreateLibrary;
+    @FXML
+    private VBox vboxViewLibrary;
 
     @FXML
     private Button buttonQueryAuthor;
@@ -265,6 +269,23 @@ public class Controller {
                     HBox box = new HBox();
 
                     Button btn = new Button("view lib");
+                    btn.setOnAction(viewLib -> {
+
+                        for (Integer bookid : l.getBooks()) {
+                            try {
+                                System.out.println(Client.books.get(bookid));
+                            } catch (RemoteException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+
+                        pages.forEach(el -> {
+                            el.opacityProperty().set(0);
+                        });
+                        vboxViewLibrary.opacityProperty().set(1);
+                        vboxViewLibrary.toFront();
+
+                    });
 
                     box.getChildren().addAll(new Label(l.getName()), btn);
 

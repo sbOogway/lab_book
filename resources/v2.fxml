@@ -47,13 +47,22 @@
          </items>
       </ToolBar>
       <VBox fx:id="vboxLibrary" alignment="CENTER" maxHeight="-Infinity"
-         minHeight="-Infinity" opacity="0.0" prefHeight="295.0" prefWidth="800.0">
+         minHeight="-Infinity" opacity="0.0" prefHeight="500.0" prefWidth="800.0">
          <children>
             <Button fx:id="buttonCreateLibrary" text="create library" />
             <ListView fx:id="listViewLibrary" prefHeight="375.0" prefWidth="800.0">
             </ListView>
 
          </children>
+      </VBox>
+
+      <VBox fx:id="vboxViewLibrary" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="500.0"  prefWidth="800.0"
+      >
+         <children>
+            <ListView fx:id="userViewLibrary"/>
+         </children>
+      
       </VBox>
       
       <VBox fx:id="vboxCreateLibrary" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"

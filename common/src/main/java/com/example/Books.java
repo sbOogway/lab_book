@@ -87,4 +87,9 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         return true;
     }
 
+    @Override
+    public Book get(Integer id) throws RemoteException {
+        return this.c.get(id);
+    }
+
 }
