@@ -6,15 +6,15 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -24,12 +24,16 @@ import javafx.stage.Stage;
 
 public class Controller {
     public static FXMLLoader loader = new FXMLLoader();
-    private boolean login = false;
-    private String user = "";
+    private boolean login = true;
+    private String user = "matia";
+    // private int userid = 1;
+    private String page = "home";
 
     public Stage stage;
     private Scene scene;
     private Parent root;
+    private String regex = "([0-9]+)";
+    private Pattern p1 = Pattern.compile(regex);
 
     @FXML
     private PasswordField passwordLogin;
@@ -48,6 +52,8 @@ public class Controller {
     private TextField emailSignup;
     @FXML
     private TextField passwordSignup;
+    @FXML
+    private TextField libraryName;
 
     @FXML
     private Label labelLoginStatus;
@@ -58,7 +64,14 @@ public class Controller {
     private ListView<HBox> listViewLibrary;
 
     @FXML
+    private ListView<HBox> bookQueryLib;
+    @FXML
+    private ListView<HBox> booksToAddLib;
+
+    @FXML
     private TextField query;
+    @FXML
+    private TextField queryLib;
 
     @FXML
     private Button buttonHome;
@@ -70,6 +83,10 @@ public class Controller {
     private Button buttonQuery;
     @FXML
     private Button buttonLibrary;
+    @FXML
+    private Button buttonCreateLibrary;
+    @FXML
+    private Button createLibrary;
 
     @FXML
     private VBox vboxQuery;
@@ -81,11 +98,17 @@ public class Controller {
     private VBox vboxBook;
     @FXML
     private VBox vboxLibrary;
+    @FXML
+    private VBox vboxCreateLibrary;
 
     @FXML
     private Button buttonQueryAuthor;
     @FXML
     private Button buttonQueryTitle;
+    @FXML
+    private Button buttonQueryAuthorLib;
+    @FXML
+    private Button buttonQueryTitleLib;
 
     @FXML
     private Label labelBookTitle;
@@ -106,6 +129,12 @@ public class Controller {
     private List<VBox> pages = new ArrayList<VBox>();
 
     private void viewPage(Button btn, VBox page) {
+        while (!bookQuery.getItems().isEmpty()) {
+            bookQuery.getItems().removeFirst();
+        }
+        while (!bookQueryLib.getItems().isEmpty()) {
+            bookQueryLib.getItems().removeFirst();
+        }
         btn.setOnAction(event -> {
             pages.forEach(e -> {
                 e.opacityProperty().set(0);
@@ -122,6 +151,12 @@ public class Controller {
         pages.add(vboxSignup);
         pages.add(vboxBook);
         pages.add(vboxLibrary);
+        pages.add(vboxCreateLibrary);
+
+        listViewLibrary.setMinHeight(200);
+        bookQueryLib.setMinHeight(200);
+
+        // vboxCreateLibrary.setMinHeight(800);
 
         // home.setPrefWidth(120);
 
@@ -132,7 +167,9 @@ public class Controller {
 
         System.out.println("init controller");
 
+        // query by title
         buttonQueryTitle.setOnAction(e -> {
+            page = "query";
             try {
                 handleQuery("t");
             } catch (Exception ex) {
@@ -140,7 +177,27 @@ public class Controller {
             }
         });
 
+        buttonQueryTitleLib.setOnAction(e -> {
+            page = "lib";
+            try {
+                handleQuery("t");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // query by author
         buttonQueryAuthor.setOnAction(e -> {
+            page = "query";
+            try {
+                handleQuery("a");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        buttonQueryAuthorLib.setOnAction(e -> {
+            page = "lib";
             try {
                 handleQuery("a");
             } catch (Exception ex) {
@@ -161,6 +218,7 @@ public class Controller {
                     vboxQuery.toFront();
                     login = true;
                     user = userLogin.getText();
+                    // userid = Client.users.get(userLogin.getText());
 
                 } else {
                     System.out.println("failed login");
@@ -192,9 +250,16 @@ public class Controller {
             }
         });
 
+        // libraries menu button
         buttonLibrary.setOnAction(e -> {
             try {
                 var libs = Client.users.get(user).get(0).getLibs();
+
+                // if (!listViewLibrary.getItems().isEmpty()) {
+                while (!listViewLibrary.getItems().isEmpty()) {
+                    listViewLibrary.getItems().removeFirst();
+                }
+                // }
 
                 libs.stream().forEach(l -> {
                     HBox box = new HBox();
@@ -218,6 +283,47 @@ public class Controller {
             }
         });
 
+        // create library button
+        buttonCreateLibrary.setOnAction(e -> {
+
+            pages.forEach(el -> {
+                el.opacityProperty().set(0);
+            });
+            vboxCreateLibrary.opacityProperty().set(1);
+            vboxCreateLibrary.toFront();
+        });
+
+        // do create library and add to db
+        createLibrary.setOnAction(e -> {
+            try {
+
+                String payloadBookIds = "ARRAY[%s]";
+                String bookIds = "";
+
+                for (HBox el : booksToAddLib.getItems()) {
+                    String infos = el.getChildren().get(0).toString();
+                    var lines = infos.split("\n");
+
+                    bookIds += lines[lines.length - 2].replace("id:\t", "") + ", ";
+                }
+
+                bookIds = bookIds.substring(0, bookIds.length() - 2);
+
+                // System.exit(0);
+
+                Client.books.createLibrary(user, libraryName.getText(), String.format(payloadBookIds, bookIds));
+                buttonLibrary.fire();
+                pages.forEach(el -> {
+                    el.opacityProperty().set(0);
+                });
+                vboxLibrary.opacityProperty().set(1);
+                vboxLibrary.toFront();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+
+        });
+
     }
 
     @FXML
@@ -225,9 +331,24 @@ public class Controller {
         while (!bookQuery.getItems().isEmpty()) {
             bookQuery.getItems().removeFirst();
         }
+        while (!bookQueryLib.getItems().isEmpty()) {
+            bookQueryLib.getItems().removeFirst();
+        }
         // bookQuery.getItems().removeAll();
         // System.out.println(query.getText());
-        var books = Client.books.get(query.getText(), mode);
+
+        String q = "";
+
+        if (page.equals("lib")) {
+            q = queryLib.getText();
+        }
+
+        if (page.equals("query")) {
+            q = query.getText();
+
+        }
+
+        var books = Client.books.get(q, mode);
 
         // VBox q = (VBox) loader.load(getFxml("query.fxml"));
         // bookQuery.getParent().getChildrenUnmodifiable().add(q);
@@ -253,15 +374,17 @@ public class Controller {
 
             box.getChildren().addAll(new Label(b.toString()), btn);
 
-            if (login) {
+            if (login && page.equals("lib")) {
                 Button atl = new Button("add to library");
                 atl.setOnAction(e -> {
+                    booksToAddLib.getItems().add(box);
 
                 });
                 box.getChildren().addAll(atl);
             }
 
             bookQuery.getItems().add(box);
+            bookQueryLib.getItems().add(box);
         });
     }
 

@@ -40,7 +40,7 @@ public class Client extends Application {
         // VBox QueryRroot = (VBox) Controller.loader.load(Controller.getFxml("query.fxml"));
         
         
-        Scene scene = new Scene(homeRoot, 800, 600);
+        Scene scene = new Scene(homeRoot, 1920, 1080);
         scene.getStylesheets().add("file://" + css.getAbsolutePath().replace("\\", "/"));
         stage.setTitle("Book Recommender");
         stage.setScene(scene);

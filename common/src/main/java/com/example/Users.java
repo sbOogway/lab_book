@@ -14,6 +14,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
     String dbUrl;
 
     private void readDatabase() {
+        this.c = new ArrayList<>();
         String sql = "SELECT * FROM utentiregistrati;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
@@ -69,6 +70,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
     }
 
     public List<User> get(String userName) {
+        readDatabase();
         Utils.log("client user query -> " + userName);
         return Utils.cerca(this.c, u -> u.getUserid().equals(userName));
     }

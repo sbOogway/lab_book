@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-   prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+   prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1"
    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller">
    <!-- need to add vbox here -->
    <children>
@@ -25,7 +25,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="1500.0" spacing="10.0">
                <children>
                   <Label fx:id="labelLoginStatus" alignment="CENTER_RIGHT" minWidth="100.0"
                      prefHeight="25.0" text="not logged in" textAlignment="RIGHT" />
@@ -49,11 +49,47 @@
       <VBox fx:id="vboxLibrary" alignment="CENTER" maxHeight="-Infinity"
          minHeight="-Infinity" opacity="0.0" prefHeight="295.0" prefWidth="800.0">
          <children>
+            <Button fx:id="buttonCreateLibrary" text="create library" />
             <ListView fx:id="listViewLibrary" prefHeight="375.0" prefWidth="800.0">
             </ListView>
 
          </children>
       </VBox>
+      
+      <VBox fx:id="vboxCreateLibrary" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0" prefHeight="800.0" prefWidth="800.0">
+         <children>
+
+            <VBox prefHeight="500.0" prefWidth="780.0" spacing="10.0">
+               <Label text="libraryName"/>
+               <TextField fx:id="libraryName"/>
+               <Label text="Look for a book" />
+               <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
+                  <children>
+                     <TextField fx:id="queryLib" prefWidth="560.0" text="book query" />
+
+                     <Label prefHeight="25.0" text="look by" />
+                     <Button fx:id="buttonQueryTitleLib" mnemonicParsing="false" prefWidth="75.0"
+                        text="title" />
+                     <Button fx:id="buttonQueryAuthorLib" maxWidth="75.0" mnemonicParsing="false"
+                        prefWidth="75.0" text="author" />
+
+                  </children>
+               </HBox>
+               <ListView fx:id="bookQueryLib" />
+
+               <ListView fx:id="booksToAddLib"/>
+
+               <Button fx:id="createLibrary" text="create library"/>
+
+
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+
       <VBox fx:id="vboxBook" alignment="BOTTOM_CENTER" maxHeight="-Infinity" minHeight="-Infinity"
          prefHeight="321.0" prefWidth="800.0">
          <children>
@@ -109,7 +145,8 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox fx:id="vboxSignup" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0"
+      <VBox fx:id="vboxSignup" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0"
          prefHeight="279.0" prefWidth="800.0" spacing="10">
          <children>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">

@@ -178,7 +178,12 @@ public class Utils {
     public static ResultSet queryDB(Connection c, String sql) throws SQLException {
         try (c) {
             java.sql.Statement stmt = c.createStatement();
-            return stmt.executeQuery(sql);
+            try {
+                return stmt.executeQuery(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
 
         }
     }

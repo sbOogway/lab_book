@@ -1,6 +1,5 @@
 package com.example;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -9,11 +8,12 @@ import java.util.List;
 
 public class Books extends UnicastRemoteObject implements BooksInterface {
     ArrayList<Book> c = new ArrayList<>();
+    String dbUrl =  "";
 
-    public Books(String dbUrl) throws RemoteException {
+    private void readDatabase() throws RemoteException {
         String sql = "SELECT * FROM libri;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
-
+        
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {
@@ -34,6 +34,13 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
             
         }
 
+    }
+
+    public Books(String dbUrl) throws RemoteException {
+        this.dbUrl = dbUrl;
+        readDatabase();
+        
+
         System.out.println("sewyng the srv my g");
 
     }
@@ -52,12 +59,32 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         }
         return null;
     }
+    
+    
 
     @Override
     public String display() throws RemoteException {
         // TODO Auto-generated method stub
         return this.c.toString();
         // throw new UnsupportedOperationException("Unimplemented method 'display'");
+    }
+
+    @Override
+    public boolean createLibrary(String user, String nome, String libri) throws RemoteException {
+
+        
+        System.out.println(libri);
+        String sql = String.format("INSERT INTO Librerie (nome_libreria, userid, libri) VALUES ('%s', (SELECT id from utentiregistrati where userid = '%s'), %s);", nome, user, libri);
+        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+
+        try (conn) {
+            Utils.queryDB(conn, sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        readDatabase();
+        return true;
     }
 
 }
