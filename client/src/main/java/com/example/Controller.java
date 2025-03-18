@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
@@ -19,6 +18,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -150,6 +151,7 @@ public class Controller {
 
     @FXML
     public void initialize() {
+
         pages.add(vboxQuery);
         pages.add(vboxLogin);
         pages.add(vboxSignup);
@@ -259,35 +261,53 @@ public class Controller {
             try {
                 var libs = Client.users.get(user).get(0).getLibs();
 
-                // if (!listViewLibrary.getItems().isEmpty()) {
                 while (!listViewLibrary.getItems().isEmpty()) {
                     listViewLibrary.getItems().removeFirst();
                 }
-                // }
+                while (!userViewLibrary.getItems().isEmpty()) {
+                    userViewLibrary.getItems().removeFirst();
+                }
 
                 libs.stream().forEach(l -> {
                     HBox box = new HBox();
 
+                    ArrayList<Book> bs = new ArrayList<>();
                     Button btn = new Button("view lib");
                     btn.setOnAction(viewLib -> {
 
                         for (Integer bookid : l.getBooks()) {
                             try {
-                                System.out.println(Client.books.get(bookid));
+                                bs.add(Client.books.get(bookid));
                             } catch (RemoteException e1) {
                                 e1.printStackTrace();
                             }
                         }
 
+                        btn.setUserData(bs);
                         pages.forEach(el -> {
                             el.opacityProperty().set(0);
                         });
                         vboxViewLibrary.opacityProperty().set(1);
                         vboxViewLibrary.toFront();
 
-                    });
+                        @SuppressWarnings("unchecked")
+                        ArrayList<Book> listViewLibraryBooks = (ArrayList<Book>) btn.getUserData();
 
-                    box.getChildren().addAll(new Label(l.getName()), btn);
+                        for (Book bo : listViewLibraryBooks) {
+                            Button addReview = new Button("add review");
+                            Button addSuggestion = new Button("add suggestion");
+                            Pane spacer = new Pane();
+                            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                            userViewLibrary.getItems()
+                                    .add(new HBox(new Label(bo.toString()), spacer, addReview, addSuggestion));
+                        }
+
+                    });
+                    Pane spacer = new Pane();
+                    HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                    box.getChildren().addAll(new Label(l.getName()), spacer, btn);
 
                     listViewLibrary.getItems().add(box);
 
