@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Controller {
+
     public static FXMLLoader loader = new FXMLLoader();
     private boolean login = true;
     private String user = "matia";
@@ -58,6 +59,8 @@ public class Controller {
 
     @FXML
     private Label labelLoginStatus;
+    @FXML
+    private Label labelBookTitleReview;
 
     @FXML
     private ListView<HBox> bookQuery;
@@ -75,6 +78,18 @@ public class Controller {
     private TextField query;
     @FXML
     private TextField queryLib;
+    @FXML
+    private TextField edizione;
+    @FXML
+    private TextField originalita;
+    @FXML
+    private TextField gradevolezza;
+    @FXML
+    private TextField contenuto;
+    @FXML
+    private TextField stile;
+    @FXML
+    private TextField note;
 
     @FXML
     private Button buttonHome;
@@ -90,6 +105,8 @@ public class Controller {
     private Button buttonCreateLibrary;
     @FXML
     private Button createLibrary;
+    @FXML
+    private Button buttonAddReview;
 
     @FXML
     private VBox vboxQuery;
@@ -105,6 +122,10 @@ public class Controller {
     private VBox vboxCreateLibrary;
     @FXML
     private VBox vboxViewLibrary;
+    @FXML
+    private VBox vboxReview;
+    @FXML
+    private VBox vboxSuggestion;
 
     @FXML
     private Button buttonQueryAuthor;
@@ -158,18 +179,21 @@ public class Controller {
         pages.add(vboxBook);
         pages.add(vboxLibrary);
         pages.add(vboxCreateLibrary);
+        pages.add(vboxViewLibrary);
+        pages.add(vboxReview);
+        pages.add(vboxSuggestion);
 
         listViewLibrary.setMinHeight(200);
         bookQueryLib.setMinHeight(200);
 
         // vboxCreateLibrary.setMinHeight(800);
-
         // home.setPrefWidth(120);
-
         viewPage(buttonQuery, vboxQuery);
         viewPage(buttonLogin, vboxLogin);
         viewPage(buttonSignup, vboxSignup);
         viewPage(buttonLibrary, vboxLibrary);
+
+        
 
         System.out.println("init controller");
 
@@ -295,7 +319,21 @@ public class Controller {
 
                         for (Book bo : listViewLibraryBooks) {
                             Button addReview = new Button("add review");
+                            addReview.setOnAction(addRvw -> {
+                                labelBookTitleReview.setText(bo.getTitle());
+                                pages.forEach(el -> {
+                                    el.opacityProperty().set(0);
+                                });
+                                vboxReview.opacityProperty().set(1);
+                                vboxReview.toFront();
+
+
+                            });
                             Button addSuggestion = new Button("add suggestion");
+                            addSuggestion.setOnAction(addSugg -> {
+
+                            });
+
                             Pane spacer = new Pane();
                             HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -351,7 +389,6 @@ public class Controller {
                 bookIds = bookIds.substring(0, bookIds.length() - 2);
 
                 // System.exit(0);
-
                 Client.books.createLibrary(user, libraryName.getText(), String.format(payloadBookIds, bookIds));
                 buttonLibrary.fire();
                 pages.forEach(el -> {
@@ -364,6 +401,15 @@ public class Controller {
             }
 
         });
+
+        // add review for a book
+        buttonAddReview.setOnAction(action -> {
+            try {
+                
+            } catch (Exception e) {
+            }
+        });
+
 
     }
 
@@ -393,7 +439,6 @@ public class Controller {
 
         // VBox q = (VBox) loader.load(getFxml("query.fxml"));
         // bookQuery.getParent().getChildrenUnmodifiable().add(q);
-
         books.stream().forEach(b -> {
             HBox box = new HBox();
 
