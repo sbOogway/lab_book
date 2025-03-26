@@ -61,6 +61,8 @@ public class Controller {
     private Label labelLoginStatus;
     @FXML
     private Label labelBookTitleReview;
+    // @FXML
+    // private Label labelBookIdReview;
 
     @FXML
     private ListView<HBox> bookQuery;
@@ -73,6 +75,12 @@ public class Controller {
     private ListView<HBox> bookQueryLib;
     @FXML
     private ListView<HBox> booksToAddLib;
+
+    
+    @FXML
+    private ListView<VBox> reviewsList;
+    @FXML
+    private ListView<HBox> suggestionsList;
 
     @FXML
     private TextField query;
@@ -321,6 +329,7 @@ public class Controller {
                             Button addReview = new Button("add review");
                             addReview.setOnAction(addRvw -> {
                                 labelBookTitleReview.setText(bo.getTitle());
+                                // labelBookIdReview.setText(bo.get);
                                 pages.forEach(el -> {
                                     el.opacityProperty().set(0);
                                 });
@@ -405,7 +414,17 @@ public class Controller {
         // add review for a book
         buttonAddReview.setOnAction(action -> {
             try {
-                
+                // int bookid = Integer.parseInt(labelBookIdReview.getText());
+                String book = labelBookTitleReview.getText();
+                int stileVoto = Integer.parseInt(stile.getText());
+                int contenutoVoto = Integer.parseInt(contenuto.getText());
+                int gradevolezzaVoto = Integer.parseInt(gradevolezza.getText());
+                int originalitaVoto = Integer.parseInt(originalita.getText());
+                int edizioneVoto = Integer.parseInt(edizione.getText());
+                String notes = note.getText();
+
+                var success = Client.books.createReview(user, book, stileVoto,contenutoVoto, gradevolezzaVoto, originalitaVoto, edizioneVoto, notes);
+                System.out.println(success);
             } catch (Exception e) {
             }
         });
@@ -420,6 +439,12 @@ public class Controller {
         }
         while (!bookQueryLib.getItems().isEmpty()) {
             bookQueryLib.getItems().removeFirst();
+        }
+        while (!reviewsList.getItems().isEmpty()) {
+            reviewsList.getItems().removeFirst();
+        }
+        while (!suggestionsList.getItems().isEmpty()) {
+            suggestionsList.getItems().removeFirst();
         }
         // bookQuery.getItems().removeAll();
         // System.out.println(query.getText());
@@ -456,9 +481,42 @@ public class Controller {
                 labelBookPublisher.setText(b.getPublisher());
                 labelBookYear.setText(Short.toString(b.getYear()));
 
+
+
+                
+                // need to add reviews and suggestions summary here
+
+                var reviews = new ArrayList<Review>();
+                try {
+                    
+
+                    reviews =  (ArrayList<Review>) Client.books.getReviews(b.getTitle());
+                    
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+
+                for (Review rev : reviews) {
+                    VBox reviewDisplay = new VBox();
+                    reviewDisplay.getChildren().addAll(
+                        new Label(rev.owner),
+                        new Label(String.valueOf("stile:\t"+rev.stile)),
+                        new Label(String.valueOf("contenuto:\t"+rev.contenuto)),
+                        new Label(String.valueOf("gradevolezza:\t"+rev.stile)),
+                        new Label(String.valueOf("originalita:\t"+rev.stile)),
+                        new Label(String.valueOf("edizione:\t"+rev.stile)),
+                        new Label(String.valueOf("voto finale:\t"+rev.stile)),
+                        new Label(String.valueOf("note:\t"+rev.notes))
+                    );
+                    reviewsList.getItems().add(reviewDisplay);
+                }
+
+                System.out.println(reviews);
+
             });
 
             box.getChildren().addAll(new Label(b.toString()), btn);
+
 
             if (login && page.equals("lib")) {
                 Button atl = new Button("add to library");

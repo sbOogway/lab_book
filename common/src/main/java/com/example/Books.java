@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Books extends UnicastRemoteObject implements BooksInterface {
+
     ArrayList<Book> c = new ArrayList<>();
-    String dbUrl =  "";
+    String dbUrl = "";
 
     private void readDatabase() throws RemoteException {
         String sql = "SELECT * FROM libri;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
-        
+
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {
@@ -31,7 +32,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            
+
         }
 
     }
@@ -39,7 +40,6 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     public Books(String dbUrl) throws RemoteException {
         this.dbUrl = dbUrl;
         readDatabase();
-        
 
         System.out.println("sewyng the srv my g");
 
@@ -59,8 +59,6 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         }
         return null;
     }
-    
-    
 
     @Override
     public String display() throws RemoteException {
@@ -72,7 +70,6 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     @Override
     public boolean createLibrary(String user, String nome, String libri) throws RemoteException {
 
-        
         System.out.println(libri);
         String sql = String.format("INSERT INTO Librerie (nome_libreria, userid, libri) VALUES ('%s', (SELECT id from utentiregistrati where userid = '%s'), %s);", nome, user, libri);
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
@@ -90,6 +87,63 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     @Override
     public Book get(Integer id) throws RemoteException {
         return this.c.get(id);
+    }
+
+    @Override
+    public boolean createReview(String user, String book, int stile, int contenuto, int gradevolezza, int originalita,
+            int edizione, String notes) throws RemoteException {
+        // TODO Auto-generated method stub
+
+        int votofinale = (stile + contenuto + gradevolezza + originalita + edizione) / 5;
+        String sql = String.format("insert into valutazionilibri (utente_id, libro_id, stile, contenuto, gradevolezza, originalita, edizione, voto_finale, note) values ((select id from utentiregistrati where userid = '%s'), (select id from libri where titolo = '%s'), %d, %d, %d, %d, %d, %d, '%s' );", user, book, stile, contenuto, gradevolezza, originalita, edizione, votofinale, notes);
+
+        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+
+        try (conn) {
+            Utils.queryDB(conn, sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        readDatabase();
+        return true;
+    }
+
+    @Override
+    public List<Review> getReviews(String title) {
+        String sql = String.format("select * from valutazionilibri  join utentiregistrati on utentiregistrati.id = valutazionilibri.utente_id where libro_id = (select id from libri where titolo = '%s');", title);
+
+        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+
+        List<Review> result = new ArrayList<Review>();
+        try (conn) {
+            var rs = Utils.queryDB(conn, sql);
+            while (rs.next()) {
+
+                System.out.println(rs.getString("userid"));
+
+                Review rev = new Review(
+                    rs.getInt("stile"), 
+                    rs.getInt("contenuto"), 
+                    rs.getInt("gradevolezza"), 
+                    rs.getInt("originalita"), 
+                    rs.getInt("edizione"), 
+                    rs.getString("userid"), 
+                    rs.getString("note"));
+                
+                result.add(rev);
+                
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        System.out.println(result.toString());
+
+        return result;
+
     }
 
 }
