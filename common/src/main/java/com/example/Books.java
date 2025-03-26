@@ -5,7 +5,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class Books extends UnicastRemoteObject implements BooksInterface {
 
     ArrayList<Book> c = new ArrayList<>();
@@ -49,6 +51,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         this.c.add(b);
     }
 
+    @Override
     public List<Book> get(String query, String mode) {
         Utils.log("client book query -> " + query);
         if (mode.equals("t")) {
@@ -62,9 +65,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
 
     @Override
     public String display() throws RemoteException {
-        // TODO Auto-generated method stub
         return this.c.toString();
-        // throw new UnsupportedOperationException("Unimplemented method 'display'");
     }
 
     @Override
@@ -92,7 +93,6 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     @Override
     public boolean createReview(String user, String book, int stile, int contenuto, int gradevolezza, int originalita,
             int edizione, String notes) throws RemoteException {
-        // TODO Auto-generated method stub
 
         int votofinale = (stile + contenuto + gradevolezza + originalita + edizione) / 5;
         String sql = String.format("insert into valutazionilibri (utente_id, libro_id, stile, contenuto, gradevolezza, originalita, edizione, voto_finale, note) values ((select id from utentiregistrati where userid = '%s'), (select id from libri where titolo = '%s'), %d, %d, %d, %d, %d, %d, '%s' );", user, book, stile, contenuto, gradevolezza, originalita, edizione, votofinale, notes);
@@ -110,12 +110,13 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     }
 
     @Override
+    @SuppressWarnings("CallToPrintStackTrace")
     public List<Review> getReviews(String title) {
         String sql = String.format("select * from valutazionilibri  join utentiregistrati on utentiregistrati.id = valutazionilibri.utente_id where libro_id = (select id from libri where titolo = '%s');", title);
 
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
-        List<Review> result = new ArrayList<Review>();
+        List<Review> result = new ArrayList<>();
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {
@@ -147,6 +148,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     }
 
     @Override
+    @SuppressWarnings("CallToPrintStackTrace")
     public boolean createSuggestion(String user, String book, String book1, String book2, String book3)
             throws RemoteException {
 
@@ -172,9 +174,29 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     }
 
     @Override
-    public List<String> getSuggestions(String title) throws RemoteException {
+    public List<Map<String, Object>> getSuggestions(String title) throws RemoteException {
         String sql = String.format("select * from consiglilibri where libro_id = (select id from libri where titolo = '%s');", title);
+
+        var result = new ArrayList<Map<String, Object>>();
+
+        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        try (conn) {
+            var rs = Utils.queryDB(conn, sql);
+            while (rs.next()) {
+                result.add(
+                    // finish this shit
+                    Map.of(
+                        "user", rs.getString("utente_id"),
+                        "book", rs.getString("libro_id")
+                        ));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
         return null;
+
     }
 
 

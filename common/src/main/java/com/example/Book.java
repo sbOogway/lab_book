@@ -16,7 +16,7 @@ public class Book implements Serializable{
     /**
      * Year of the book publication.
      */
-    private short year;
+    private final short year;
 
     /**
      * Index of the book in the csv file. it is handy because it univocally

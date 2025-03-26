@@ -2,17 +2,13 @@ package com.example;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -33,10 +29,6 @@ public class Controller {
     private String page = "home";
 
     public Stage stage;
-    private Scene scene;
-    private Parent root;
-    private String regex = "([0-9]+)";
-    private Pattern p1 = Pattern.compile(regex);
 
     @FXML
     private PasswordField passwordLogin;
@@ -108,8 +100,6 @@ public class Controller {
     private TextField note;
 
     @FXML
-    private Button buttonHome;
-    @FXML
     private Button buttonLogin;
     @FXML
     private Button buttonSignup;
@@ -174,7 +164,7 @@ public class Controller {
     @FXML
     private Button submitSignup;
 
-    private List<VBox> pages = new ArrayList<VBox>();
+    private final List<VBox> pages = new ArrayList<>();
 
     private void viewPage(Button btn, VBox page) {
         while (!bookQuery.getItems().isEmpty()) {
@@ -193,6 +183,7 @@ public class Controller {
     }
 
     @FXML
+    @SuppressWarnings({"UseSpecificCatch", "CallToPrintStackTrace"})
     public void initialize() {
 
         pages.add(vboxQuery);
@@ -500,6 +491,7 @@ public class Controller {
     }
 
     @FXML
+    @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
     private void handleQuery(String mode) throws Exception {
         while (!bookQuery.getItems().isEmpty()) {
             bookQuery.getItems().removeFirst();
@@ -617,10 +609,6 @@ public class Controller {
             bookQuery.getItems().add(box);
 
         });
-    }
-
-    private void handleLogin() throws Exception {
-
     }
 
     public static FileInputStream getFxml(String name) throws FileNotFoundException {
