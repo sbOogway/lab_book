@@ -2,6 +2,7 @@ package com.example;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -122,6 +123,8 @@ public class Controller {
     private Button createLibrary;
     @FXML
     private Button buttonAddReview;
+    @FXML
+    private Button buttonAddSuggestion;
 
     @FXML
     private VBox vboxQuery;
@@ -463,6 +466,37 @@ public class Controller {
         });
 
         // add suggestions for a book
+        buttonAddSuggestion.setOnAction(action -> {
+            String book = labelBookTitleSuggestion.getText();
+            String book1, book2, book3;
+
+            try {
+                book1 = booksToAddSugg.getItems().get(0).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
+            } catch (Exception e) {
+                e.printStackTrace();
+                book1 = null;
+            }
+
+            try {
+                book2 = booksToAddSugg.getItems().get(1).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
+            } catch (Exception e) {
+                e.printStackTrace();
+                book2 = null;
+            }
+
+            try {
+                book3 = booksToAddSugg.getItems().get(2).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
+            } catch (Exception e) {
+                e.printStackTrace();
+                book3 = null;
+            }
+            System.out.println(book1);
+
+            try { 
+                Client.books.createSuggestion(user, book, book1, book2, book3);
+            } catch (RemoteException ex) {
+            }
+        });
     }
 
     @FXML
@@ -524,7 +558,6 @@ public class Controller {
                 // need to add reviews and suggestions summary here
                 var reviews = new ArrayList<Review>();
                 try {
-
                     reviews = (ArrayList<Review>) Client.books.getReviews(b.getTitle());
 
                 } catch (RemoteException ex) {
@@ -535,19 +568,26 @@ public class Controller {
                     VBox reviewDisplay = new VBox();
                     reviewDisplay.getChildren().addAll(
                             new Label("user:\t\t\t" + rev.owner),
-                            new Label(String.valueOf("stile:\t\t\t" + rev.stile)),
-                            new Label(String.valueOf("contenuto:\t" + rev.contenuto)),
-                            new Label(String.valueOf("gradevolezza:\t" + rev.stile)),
-                            new Label(String.valueOf("originalita:\t" + rev.stile)),
-                            new Label(String.valueOf("edizione:\t\t" + rev.stile)),
-                            new Label(String.valueOf("voto finale:\t" + rev.stile)),
-                            new Label(String.valueOf("note:\t\t" + rev.notes))
+                            new Label("stile:\t\t\t" + rev.stile),
+                            new Label("contenuto:\t" + rev.contenuto),
+                            new Label("gradevolezza:\t" + rev.stile),
+                            new Label("originalita:\t" + rev.stile),
+                            new Label("edizione:\t\t" + rev.stile),
+                            new Label("voto finale:\t" + rev.stile),
+                            new Label("note:\t\t" + rev.notes)
                     );
                     reviewsList.getItems().add(reviewDisplay);
                 }
 
                 System.out.println(reviews);
 
+                var suggestions = new ArrayList<String>();
+                try {
+                    suggestions = (ArrayList<String>) Client.books.getSuggestions(b.getTitle());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println(suggestions);
             });
 
             box.getChildren().addAll(new Label(b.toString()), btn);
@@ -575,8 +615,7 @@ public class Controller {
             }
 
             bookQuery.getItems().add(box);
-            
-            
+
         });
     }
 

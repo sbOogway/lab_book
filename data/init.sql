@@ -78,3 +78,8 @@ INSERT INTO Librerie
 VALUES
 ('test1', 1, ARRAY[1, 2, 3]),
 ('test2', 1, ARRAY[4, 5, 7]);
+
+INSERT INTO Libri 
+(id, titolo, autore, editore, categoria, anno)
+VALUES
+(0, "null", "null", "null", "null", 9999);

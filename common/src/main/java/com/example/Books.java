@@ -150,7 +150,14 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     public boolean createSuggestion(String user, String book, String book1, String book2, String book3)
             throws RemoteException {
 
-        String sql = String.format("insert into consiglilibri (libro_id, user_id, libro1_suggerito_id, libro2_suggerito_id, libro3_suggerito_id) values ((select id from libri where titolo = '%s'), (select id from utentiregistrati where userid = '%s'), '%s', '%s', '%s');", book, user, book1, book2, book3);
+        String sql = String.format(
+            "insert into consiglilibri (libro_id, utente_id, libro1_suggerito_id, libro2_suggerito_id, libro3_suggerito_id) " +
+            "values ((select id from libri where titolo = '%s'), (select id from utentiregistrati where userid = '%s')," + 
+            "(select id from libri where titolo = '%s')," + 
+            "(select id from libri where titolo = '%s')," +
+            "(select id from libri where titolo = '%s'));"
+            
+            , book, user, book1, book2, book3);
 
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
