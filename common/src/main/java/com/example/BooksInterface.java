@@ -11,6 +11,8 @@ public interface BooksInterface extends Remote  {
     public boolean createLibrary(String user, String nome, String libri) throws RemoteException;
     public boolean createReview(String user, String book, int stile, int contenuto, int gradevolezza, int originalita, int edizione, String notes) throws RemoteException;
     public List<Review> getReviews(String title) throws RemoteException;
+    public boolean createSuggestion(String user, String book, String book1, String book2, String book3) throws RemoteException;
+    public List<String> getSuggestions(String title) throws RemoteException;
 
 
 }

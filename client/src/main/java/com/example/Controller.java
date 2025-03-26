@@ -61,6 +61,8 @@ public class Controller {
     private Label labelLoginStatus;
     @FXML
     private Label labelBookTitleReview;
+    @FXML
+    private Label labelBookTitleSuggestion;
     // @FXML
     // private Label labelBookIdReview;
 
@@ -75,8 +77,11 @@ public class Controller {
     private ListView<HBox> bookQueryLib;
     @FXML
     private ListView<HBox> booksToAddLib;
+    @FXML
+    private ListView<HBox> bookQuerySugg;
+    @FXML
+    private ListView<HBox> booksToAddSugg;
 
-    
     @FXML
     private ListView<VBox> reviewsList;
     @FXML
@@ -86,6 +91,8 @@ public class Controller {
     private TextField query;
     @FXML
     private TextField queryLib;
+    @FXML
+    private TextField querySugg;
     @FXML
     private TextField edizione;
     @FXML
@@ -142,7 +149,11 @@ public class Controller {
     @FXML
     private Button buttonQueryAuthorLib;
     @FXML
+    private Button buttonQueryAuthorSugg;
+    @FXML
     private Button buttonQueryTitleLib;
+    @FXML
+    private Button buttonQueryTitleSugg;
 
     @FXML
     private Label labelBookTitle;
@@ -201,8 +212,6 @@ public class Controller {
         viewPage(buttonSignup, vboxSignup);
         viewPage(buttonLibrary, vboxLibrary);
 
-        
-
         System.out.println("init controller");
 
         // query by title
@@ -224,6 +233,15 @@ public class Controller {
             }
         });
 
+        buttonQueryTitleSugg.setOnAction(e -> {
+            page = "sugg";
+            try {
+                handleQuery("t");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         // query by author
         buttonQueryAuthor.setOnAction(e -> {
             page = "query";
@@ -236,6 +254,15 @@ public class Controller {
 
         buttonQueryAuthorLib.setOnAction(e -> {
             page = "lib";
+            try {
+                handleQuery("a");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        buttonQueryAuthorSugg.setOnAction(e -> {
+            page = "sugg";
             try {
                 handleQuery("a");
             } catch (Exception ex) {
@@ -336,10 +363,15 @@ public class Controller {
                                 vboxReview.opacityProperty().set(1);
                                 vboxReview.toFront();
 
-
                             });
                             Button addSuggestion = new Button("add suggestion");
                             addSuggestion.setOnAction(addSugg -> {
+                                labelBookTitleSuggestion.setText(bo.getTitle());
+                                pages.forEach(el -> {
+                                    el.opacityProperty().set(0);
+                                });
+                                vboxSuggestion.opacityProperty().set(1);
+                                vboxSuggestion.toFront();
 
                             });
 
@@ -423,13 +455,14 @@ public class Controller {
                 int edizioneVoto = Integer.parseInt(edizione.getText());
                 String notes = note.getText();
 
-                var success = Client.books.createReview(user, book, stileVoto,contenutoVoto, gradevolezzaVoto, originalitaVoto, edizioneVoto, notes);
+                var success = Client.books.createReview(user, book, stileVoto, contenutoVoto, gradevolezzaVoto, originalitaVoto, edizioneVoto, notes);
                 System.out.println(success);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-
+        // add suggestions for a book
     }
 
     @FXML
@@ -440,15 +473,12 @@ public class Controller {
         while (!bookQueryLib.getItems().isEmpty()) {
             bookQueryLib.getItems().removeFirst();
         }
-        while (!reviewsList.getItems().isEmpty()) {
-            reviewsList.getItems().removeFirst();
+        while (!bookQuerySugg.getItems().isEmpty()) {
+            bookQuerySugg.getItems().removeFirst();
         }
-        while (!suggestionsList.getItems().isEmpty()) {
-            suggestionsList.getItems().removeFirst();
-        }
+
         // bookQuery.getItems().removeAll();
         // System.out.println(query.getText());
-
         String q = "";
 
         if (page.equals("lib")) {
@@ -457,11 +487,15 @@ public class Controller {
 
         if (page.equals("query")) {
             q = query.getText();
+        }
 
+        if (page.equals("sugg")) {
+            q = querySugg.getText();
         }
 
         var books = Client.books.get(q, mode);
 
+        // System.out.println(books);
         // VBox q = (VBox) loader.load(getFxml("query.fxml"));
         // bookQuery.getParent().getChildrenUnmodifiable().add(q);
         books.stream().forEach(b -> {
@@ -470,6 +504,12 @@ public class Controller {
             Button btn = new Button("view book");
 
             btn.setOnAction(evt -> {
+                while (!reviewsList.getItems().isEmpty()) {
+                    reviewsList.getItems().removeFirst();
+                }
+                while (!suggestionsList.getItems().isEmpty()) {
+                    suggestionsList.getItems().removeFirst();
+                }
                 pages.forEach(e -> {
                     e.opacityProperty().set(0);
                 });
@@ -481,17 +521,12 @@ public class Controller {
                 labelBookPublisher.setText(b.getPublisher());
                 labelBookYear.setText(Short.toString(b.getYear()));
 
-
-
-                
                 // need to add reviews and suggestions summary here
-
                 var reviews = new ArrayList<Review>();
                 try {
-                    
 
-                    reviews =  (ArrayList<Review>) Client.books.getReviews(b.getTitle());
-                    
+                    reviews = (ArrayList<Review>) Client.books.getReviews(b.getTitle());
+
                 } catch (RemoteException ex) {
                     ex.printStackTrace();
                 }
@@ -499,14 +534,14 @@ public class Controller {
                 for (Review rev : reviews) {
                     VBox reviewDisplay = new VBox();
                     reviewDisplay.getChildren().addAll(
-                        new Label(rev.owner),
-                        new Label(String.valueOf("stile:\t"+rev.stile)),
-                        new Label(String.valueOf("contenuto:\t"+rev.contenuto)),
-                        new Label(String.valueOf("gradevolezza:\t"+rev.stile)),
-                        new Label(String.valueOf("originalita:\t"+rev.stile)),
-                        new Label(String.valueOf("edizione:\t"+rev.stile)),
-                        new Label(String.valueOf("voto finale:\t"+rev.stile)),
-                        new Label(String.valueOf("note:\t"+rev.notes))
+                            new Label("user:\t\t\t" + rev.owner),
+                            new Label(String.valueOf("stile:\t\t\t" + rev.stile)),
+                            new Label(String.valueOf("contenuto:\t" + rev.contenuto)),
+                            new Label(String.valueOf("gradevolezza:\t" + rev.stile)),
+                            new Label(String.valueOf("originalita:\t" + rev.stile)),
+                            new Label(String.valueOf("edizione:\t\t" + rev.stile)),
+                            new Label(String.valueOf("voto finale:\t" + rev.stile)),
+                            new Label(String.valueOf("note:\t\t" + rev.notes))
                     );
                     reviewsList.getItems().add(reviewDisplay);
                 }
@@ -517,7 +552,6 @@ public class Controller {
 
             box.getChildren().addAll(new Label(b.toString()), btn);
 
-
             if (login && page.equals("lib")) {
                 Button atl = new Button("add to library");
                 atl.setOnAction(e -> {
@@ -525,10 +559,24 @@ public class Controller {
 
                 });
                 box.getChildren().addAll(atl);
+                bookQueryLib.getItems().add(box);
+                return;
+            }
+
+            if (login && page.equals("sugg")) {
+                Button ats = new Button("add to suggestions");
+                ats.setOnAction(e -> {
+                    booksToAddSugg.getItems().add(box);
+
+                });
+                box.getChildren().addAll(ats);
+                bookQuerySugg.getItems().add(box);
+                return;
             }
 
             bookQuery.getItems().add(box);
-            bookQueryLib.getItems().add(box);
+            
+            
         });
     }
 

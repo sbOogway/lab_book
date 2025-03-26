@@ -53,22 +53,14 @@ CREATE TABLE ConsigliLibri (
     id SERIAL PRIMARY KEY,
     libro_id INT NOT NULL,
     utente_id INT NOT NULL,
-    libro_suggerito_id INT NOT NULL,
+    libro1_suggerito_id INT NOT NULL,
+    libro2_suggerito_id INT NOT NULL,
+    libro3_suggerito_id INT NOT NULL,
     FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE,
     FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE,
-    FOREIGN KEY (libro_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE
-);
-
--- Creazione della tabella per memorizzare le valutazioni aggregate (opzionale)
-CREATE TABLE ValutazioniAggregate (
-    libro_id INT NOT NULL,
-    numero_utenti INT DEFAULT 0,
-    media_stile DECIMAL(3,2) DEFAULT 0,
-    media_contenuto DECIMAL(3,2) DEFAULT 0,
-    media_gradevolezza DECIMAL(3,2) DEFAULT 0,
-    media_originalita DECIMAL(3,2) DEFAULT 0,
-    media_edizione DECIMAL(3,2) DEFAULT 0,
-    FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE
+    FOREIGN KEY (libro1_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro2_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro3_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE
 );
 
 -- Indici per migliorare le performance delle query
