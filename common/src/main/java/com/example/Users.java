@@ -1,3 +1,8 @@
+/**
+ * @author  Mattia Papaccioli 747053 CO
+ * @version 1.0
+ * @since 1.0
+ */
 package com.example;
 
 import java.rmi.RemoteException;
@@ -8,10 +13,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Users class
+ */
 public class Users extends UnicastRemoteObject implements UsersInterface {
+
     public ArrayList<User> c = new ArrayList<>();
     String dbUrl;
 
+    /**
+     * reads database content for utentiregistrati table
+     */
     private void readDatabase() {
         this.c = new ArrayList<>();
         String sql = "SELECT * FROM utentiregistrati order by id;";
@@ -58,25 +70,46 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
         }
     }
 
+    /**
+     * construct the users object
+     *
+     * @param dbUrl
+     * @throws RemoteException
+     */
     public Users(String dbUrl) throws RemoteException {
         this.dbUrl = dbUrl;
         readDatabase();
 
     }
 
+    /**
+     * add user to the list
+     *
+     * @param b user to add
+     */
     public void add(User b) {
         this.c.add(b);
     }
 
+    /**
+     * get user by username
+     *
+     * @param userName username to search
+     * @return list of users
+     */
+    @Override
     public List<User> get(String userName) {
         readDatabase();
         Utils.log("client user query -> " + userName);
         return Utils.cerca(this.c, u -> u.getUserid().equals(userName));
     }
 
-    
-
-
+    /**
+     * @param userName
+     * @param password
+     * @return boolean
+     * @throws RemoteException
+     */
     @Override
     public boolean login(String userName, String password) throws RemoteException {
         try {
@@ -86,6 +119,17 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
         }
     }
 
+    /**
+     * @param userName
+     * @param password
+     * @param codiceFiscale
+     * @param email
+     * @param nome
+     * @param cognome
+     * 
+     * @return {true}
+     *
+     */
     @Override
     public boolean add(String userName, String password, String codiceFiscale, String email, String nome,
             String cognome) throws RemoteException {
@@ -111,6 +155,11 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
 
     }
 
+    /**
+     * @param id
+     * @return User
+     * @throws RemoteException
+     */
     @Override
     public User get(int id) throws RemoteException {
         return this.c.get(id);

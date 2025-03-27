@@ -1,3 +1,8 @@
+/**
+ * @author  Mattia Papaccioli 747053 CO
+ * @version 1.0
+ * @since 1.0
+ */
 package com.example;
 
 import java.rmi.RemoteException;
@@ -14,7 +19,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     String dbUrl = "";
 
     private void readDatabase() throws RemoteException {
-        String sql = "SELECT * FROM libri;";
+        String sql = "SELECT * FROM libri order by id;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
         try (conn) {
@@ -43,7 +48,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         this.dbUrl = dbUrl;
         readDatabase();
 
-        System.out.println("sewyng the srv my g");
+        // System.out.println("sewyng the srv my g");
 
     }
 
@@ -141,7 +146,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
             return null;
         }
 
-        System.out.println(result.toString());
+        // System.out.println(result.toString());
 
         return result;
 
@@ -188,12 +193,12 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
                     
                     Map.of(
                         "user", rs.getInt("utente_id"),
-                        "book",  this.c.get(rs.getInt("libro_id")-1).getTitle(),
-                        "book1", this.c.get(rs.getInt("libro1_suggerito_id")-1).getTitle(),
-                        "book2", this.c.get(rs.getInt("libro2_suggerito_id")-1).getTitle(),
-                        "book3", this.c.get(rs.getInt("libro3_suggerito_id")-1).getTitle()
+                        "book",  this.c.get(rs.getInt("libro_id")).getTitle(),
+                        "book1", this.c.get(rs.getInt("libro1_suggerito_id")).getTitle(),
+                        "book2", this.c.get(rs.getInt("libro2_suggerito_id")).getTitle(),
+                        "book3", this.c.get(rs.getInt("libro3_suggerito_id")).getTitle()
                         ));
-                System.out.println(result);
+                // System.out.println(result);
 
             }
         } catch (SQLException e) {

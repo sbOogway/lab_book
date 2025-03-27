@@ -80,6 +80,6 @@ VALUES
 ('test2', 1, ARRAY[4, 5, 7]);
 
 INSERT INTO Libri 
-(id, titolo, autore, editore, categoria, anno)
+(id, titolo, autore, categoria, anno)
 VALUES
-(0, "null", "null", "null", "null", 9999);
+(0, 'null', 'null', '{"null", "null"}',  9999);

@@ -1,3 +1,9 @@
+/**
+ * @author  Mattia Papaccioli 747053 CO
+ * @version 1.0
+ * @since 1.0
+ */
+
 package com.example;
 
 // import com.example.common;
@@ -26,6 +32,13 @@ public class Server {
 
     public static String URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
 
+    
+    /** 
+     * initialize the database from data/init.sql script
+     * 
+     * @throws SQLException
+     * @throws IOException
+     */
     private static void initDb() throws SQLException, IOException {
         var path = Paths.get("data", "BooksDatasetClean.csv").toString();
         String init = Utils.readFile(Paths.get("data", "init.sql").toString());
@@ -68,7 +81,12 @@ public class Server {
 
     }
 
+    /**
+     * launch the server
+     * @param args
+     */
     public static void main(String[] args) {
+
         try {
             // initDb();
 

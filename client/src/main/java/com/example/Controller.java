@@ -1,3 +1,8 @@
+/**
+ * @author  Mattia Papaccioli 747053 CO
+ * @version 1.0
+ * @since 1.0
+ */
 package com.example;
 
 import java.io.FileInputStream;
@@ -21,6 +26,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The Controller class serves as the main controller for the application's user
+ * interface. It manages the interaction between the UI components and the
+ * underlying logic, handling user input, navigation, and various actions within
+ * the application.
+ *
+ * This class utilizes JavaFX annotations to bind UI elements and provides
+ * methods for managing pages, user authentication, and other functionalities.
+ */
 public class Controller {
 
     public static FXMLLoader loader = new FXMLLoader();
@@ -59,6 +73,23 @@ public class Controller {
     private Label labelBookTitleSuggestion;
     // @FXML
     // private Label labelBookIdReview;
+
+    @FXML
+    private Label stileMedia;
+    @FXML
+    private Label contenutoMedia;
+    @FXML
+    private Label gradevolezzaMedia;
+    @FXML
+    private Label originalitaMedia;
+    @FXML
+    private Label edizioneMedia;
+    @FXML
+    private Label votoFinaleMedia;
+    @FXML
+    private Label numeroRecensioni;
+    @FXML
+    private Label numeroSuggerimenti;
 
     @FXML
     private ListView<HBox> bookQuery;
@@ -167,6 +198,15 @@ public class Controller {
 
     private final List<VBox> pages = new ArrayList<>();
 
+    /**
+     * Handles the visibility and navigation of pages within the application.
+     * This method clears the items from `bookQuery` and `bookQueryLib` lists,
+     * and sets up an action for the provided button to bring the specified page
+     * to the front and make it visible while hiding all other pages.
+     *
+     * @param btn The button that triggers the page view action.
+     * @param page The VBox representing the page to be displayed.
+     */
     private void viewPage(Button btn, VBox page) {
         while (!bookQuery.getItems().isEmpty()) {
             bookQuery.getItems().removeFirst();
@@ -183,6 +223,13 @@ public class Controller {
         });
     }
 
+    /**
+     * Initializes the controller by setting up the pages for the application.
+     * This method adds various VBox elements representing different pages
+     * (e.g., query, login, signup, book, library, etc.) to the `pages` list.
+     * These pages are used for navigation and visibility management within the
+     * application.
+     */
     @FXML
     @SuppressWarnings({"UseSpecificCatch", "CallToPrintStackTrace"})
     public void initialize() {
@@ -484,13 +531,21 @@ public class Controller {
             }
             System.out.println(book1);
 
-            try { 
+            try {
                 Client.books.createSuggestion(user, book, book1, book2, book3);
             } catch (RemoteException ex) {
             }
         });
     }
 
+    /**
+     * Handles the query operation based on the provided mode. Clears the items
+     * from the query lists and retrieves the query text based on the current
+     * page.
+     *
+     * @param mode The mode of the query operation (e.g., "lib").
+     * @throws Exception If an error occurs during the query handling process.
+     */
     @FXML
     @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
     private void handleQuery(String mode) throws Exception {
@@ -526,6 +581,10 @@ public class Controller {
         // VBox q = (VBox) loader.load(getFxml("query.fxml"));
         // bookQuery.getParent().getChildrenUnmodifiable().add(q);
         books.stream().forEach(b -> {
+            if (b.getTitle().equals("null")) {
+                return;
+            }
+
             HBox box = new HBox();
 
             Button btn = new Button("view book");
@@ -572,8 +631,7 @@ public class Controller {
                     reviewsList.getItems().add(reviewDisplay);
                 }
 
-                System.out.println(reviews);
-
+                // System.out.println(reviews);
                 var suggestions = new ArrayList<Map<String, Object>>();
                 try {
                     suggestions = (ArrayList<Map<String, Object>>) Client.books.getSuggestions(b.getTitle());
@@ -581,21 +639,30 @@ public class Controller {
                     e.printStackTrace();
                 }
 
-                for (Map<String, Object> sugg: suggestions) {
+                for (Map<String, Object> sugg : suggestions) {
                     VBox suggDisplay = new VBox();
                     try {
                         suggDisplay.getChildren().addAll(
-                                new Label("user:\t\t\t"+Client.users.get((int)sugg.get("user")-1).getUserid()),
-                                new Label("book1:\t\t"+sugg.get("book1")),
-                                new Label("book2:\t\t"+sugg.get("book2")),
-                                new Label("book3:\t\t"+sugg.get("book3"))
+                                new Label("user:\t\t\t" + Client.users.get((int) sugg.get("user") - 1).getUserid()),
+                                new Label("book1:\t\t" + sugg.get("book1")),
+                                new Label("book2:\t\t" + sugg.get("book2")),
+                                new Label("book3:\t\t" + sugg.get("book3"))
                         );
                         suggestionsList.getItems().add(suggDisplay);
                     } catch (RemoteException ex) {
                         ex.printStackTrace();
                     }
                 }
-                System.out.println(suggestions);
+
+                stileMedia.setText(String.format("media voto stile:\t\t\t%.2f", reviews.stream().map(e -> e.stile).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                contenutoMedia.setText(String.format("media voto contenuto:\t\t%.2f", reviews.stream().map(e -> e.contenuto).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                gradevolezzaMedia.setText(String.format("media voto gradevolezza:\t%.2f", reviews.stream().map(e -> e.gradevolezza).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                originalitaMedia.setText(String.format("media voto originalita:\t\t%.2f", reviews.stream().map(e -> e.originalita).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                edizioneMedia.setText(String.format("media voto edizione:\t%.2f", reviews.stream().map(e -> e.edizione).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                votoFinaleMedia.setText(String.format("media voto finale:\t\t%.2f", reviews.stream().map(e -> e.votofinale).mapToInt(Integer::intValue).summaryStatistics().getAverage()));
+                numeroRecensioni.setText("numero recensioni:\t\t" + reviews.size());
+                numeroSuggerimenti.setText("numero suggerimenti:\t" + suggestions.size());
+                // System.out.println(suggestions);
             });
 
             box.getChildren().addAll(new Label(b.toString()), btn);
@@ -627,6 +694,15 @@ public class Controller {
         });
     }
 
+    /**
+     * Retrieves a FileInputStream for the specified FXML file. This method
+     * constructs the file path using the "resources" directory and the provided
+     * file name, then opens a FileInputStream for it.
+     *
+     * @param name The name of the FXML file to be loaded.
+     * @return A FileInputStream for the specified FXML file.
+     * @throws FileNotFoundException If the specified file is not found.
+     */
     public static FileInputStream getFxml(String name) throws FileNotFoundException {
         return new FileInputStream(Paths.get("resources", name).toString());
     }

@@ -148,7 +148,7 @@
             <ListView fx:id="bookQuerySugg" />
             <ListView fx:id="booksToAddSugg" />
 
-            <Button fx:id="buttonAddSuggestion" text="add suggestions"/>
+            <Button fx:id="buttonAddSuggestion" text="add suggestions" />
 
          </children>
 
@@ -211,16 +211,36 @@
       <VBox fx:id="vboxBook" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity"
          prefHeight="800" prefWidth="800.0" spacing="10.0">
          <children>
-            <Label fx:id="labelBookTitle" style="-fx-font-size: 18px;" text="Title" />
-            <VBox prefHeight="200.0" prefWidth="300.0">
+            <Label fx:id="labelBookTitle" style="-fx-font-size: 18px;" text="" />
+            <HBox>
                <children>
-                  <Label fx:id="labelBookAuthor" text="Author" />
-                  <Label fx:id="labelBookCategory" text="Category" />
-                  <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="Year" />
-                  <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
-                     text="Publisher" />
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="labelBookAuthor" text="" />
+                        <Label fx:id="labelBookCategory" text="" />
+                        <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="" />
+                        <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
+                           text="Publisher" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="stileMedia" />
+                        <Label fx:id="contenutoMedia" />
+                        <Label fx:id="gradevolezzaMedia" />
+                        <Label fx:id="originalitaMedia" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="edizioneMedia" />
+                        <Label fx:id="votoFinaleMedia" />
+                        <Label fx:id="numeroRecensioni" />
+                        <Label fx:id="numeroSuggerimenti" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
             <VBox spacing="10.0">
                <children>
                   <ListView fx:id="reviewsList" prefWidth="1500.0" />
