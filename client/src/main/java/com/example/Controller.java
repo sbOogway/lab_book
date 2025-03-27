@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,7 +79,7 @@ public class Controller {
     @FXML
     private ListView<VBox> reviewsList;
     @FXML
-    private ListView<HBox> suggestionsList;
+    private ListView<VBox> suggestionsList;
 
     @FXML
     private TextField query;
@@ -562,10 +563,10 @@ public class Controller {
                             new Label("user:\t\t\t" + rev.owner),
                             new Label("stile:\t\t\t" + rev.stile),
                             new Label("contenuto:\t" + rev.contenuto),
-                            new Label("gradevolezza:\t" + rev.stile),
-                            new Label("originalita:\t" + rev.stile),
-                            new Label("edizione:\t\t" + rev.stile),
-                            new Label("voto finale:\t" + rev.stile),
+                            new Label("gradevolezza:\t" + rev.gradevolezza),
+                            new Label("originalita:\t" + rev.originalita),
+                            new Label("edizione:\t\t" + rev.edizione),
+                            new Label("voto finale:\t" + rev.votofinale),
                             new Label("note:\t\t" + rev.notes)
                     );
                     reviewsList.getItems().add(reviewDisplay);
@@ -573,11 +574,26 @@ public class Controller {
 
                 System.out.println(reviews);
 
-                var suggestions = new ArrayList<String>();
+                var suggestions = new ArrayList<Map<String, Object>>();
                 try {
-                    suggestions = (ArrayList<String>) Client.books.getSuggestions(b.getTitle());
+                    suggestions = (ArrayList<Map<String, Object>>) Client.books.getSuggestions(b.getTitle());
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+
+                for (Map<String, Object> sugg: suggestions) {
+                    VBox suggDisplay = new VBox();
+                    try {
+                        suggDisplay.getChildren().addAll(
+                                new Label("user:\t\t\t"+Client.users.get((int)sugg.get("user")-1).getUserid()),
+                                new Label("book1:\t\t"+sugg.get("book1")),
+                                new Label("book2:\t\t"+sugg.get("book2")),
+                                new Label("book3:\t\t"+sugg.get("book3"))
+                        );
+                        suggestionsList.getItems().add(suggDisplay);
+                    } catch (RemoteException ex) {
+                        ex.printStackTrace();
+                    }
                 }
                 System.out.println(suggestions);
             });

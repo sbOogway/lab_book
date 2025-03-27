@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Users extends UnicastRemoteObject implements UsersInterface {
-    ArrayList<User> c = new ArrayList<>();
+    public ArrayList<User> c = new ArrayList<>();
     String dbUrl;
 
     private void readDatabase() {
         this.c = new ArrayList<>();
-        String sql = "SELECT * FROM utentiregistrati;";
+        String sql = "SELECT * FROM utentiregistrati order by id;";
         var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
 
         try (conn) {
@@ -75,6 +74,9 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
         return Utils.cerca(this.c, u -> u.getUserid().equals(userName));
     }
 
+    
+
+
     @Override
     public boolean login(String userName, String password) throws RemoteException {
         try {
@@ -107,6 +109,11 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
         readDatabase();
         return f;
 
+    }
+
+    @Override
+    public User get(int id) throws RemoteException {
+        return this.c.get(id);
     }
 
 }

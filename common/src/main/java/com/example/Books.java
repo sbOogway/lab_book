@@ -185,17 +185,22 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
             while (rs.next()) {
                 result.add(
                     // finish this shit
+                    
                     Map.of(
-                        "user", rs.getString("utente_id"),
-                        "book", rs.getString("libro_id")
+                        "user", rs.getInt("utente_id"),
+                        "book",  this.c.get(rs.getInt("libro_id")-1).getTitle(),
+                        "book1", this.c.get(rs.getInt("libro1_suggerito_id")-1).getTitle(),
+                        "book2", this.c.get(rs.getInt("libro2_suggerito_id")-1).getTitle(),
+                        "book3", this.c.get(rs.getInt("libro3_suggerito_id")-1).getTitle()
                         ));
+                System.out.println(result);
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return result;
+            return null;
         }
-        return null;
+        return result;
 
     }
 
