@@ -256,10 +256,10 @@
          </padding>
       </VBox>
       <VBox fx:id="vboxQuery" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
-         opacity="0.0" prefHeight="350.0" prefWidth="800.0">
+         opacity="0.0" prefHeight="800" prefWidth="800.0">
          <children>
 
-            <VBox prefHeight="290.0" prefWidth="780.0">
+            <VBox prefHeight="800" prefWidth="780.0">
                <Label text="Look for a book" />
                <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
                   <children>
@@ -276,7 +276,7 @@
 
                   </children>
                </HBox>
-               <ListView fx:id="bookQuery" prefHeight="300" prefWidth="500.0" />
+               <ListView fx:id="bookQuery" prefHeight="600" prefWidth="500.0" />
 
 
             </VBox>

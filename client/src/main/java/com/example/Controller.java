@@ -593,8 +593,8 @@ public class Controller {
 
         List<Book> books;
 
-        int year = Integer.parseInt(yearQuery.getText());
         if (mode.equals("y")) {
+            int year = Integer.parseInt(yearQuery.getText());
             books = Client.books.get(q, "a").stream().filter(e -> e.getYear() == year).collect(Collectors.toList());
         } else {
             books = Client.books.get(q, mode);
