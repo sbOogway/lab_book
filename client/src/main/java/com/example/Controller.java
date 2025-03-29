@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -181,6 +182,11 @@ public class Controller {
     private Button buttonQueryTitleSugg;
 
     @FXML
+    private Button yearQueryButton;
+    @FXML
+    private TextField yearQuery;
+
+    @FXML
     private Label labelBookTitle;
     @FXML
     private Label labelBookAuthor;
@@ -255,6 +261,16 @@ public class Controller {
         viewPage(buttonLibrary, vboxLibrary);
 
         System.out.println("init controller");
+
+        // query author year
+        yearQueryButton.setOnAction(e -> {
+            page = "query";
+            try {
+                handleQuery("y");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         // query by title
         buttonQueryTitle.setOnAction(e -> {
@@ -575,7 +591,14 @@ public class Controller {
             q = querySugg.getText();
         }
 
-        var books = Client.books.get(q, mode);
+        List<Book> books;
+
+        int year = Integer.parseInt(yearQuery.getText());
+        if (mode.equals("y")) {
+            books = Client.books.get(q, "a").stream().filter(e -> e.getYear() == year).collect(Collectors.toList());
+        } else {
+            books = Client.books.get(q, mode);
+        }
 
         // System.out.println(books);
         // VBox q = (VBox) loader.load(getFxml("query.fxml"));

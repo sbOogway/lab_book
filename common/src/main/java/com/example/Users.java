@@ -127,7 +127,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
      * @param nome
      * @param cognome
      * 
-     * @return {true}
+     * @return boolean. success or not success 
      *
      */
     @Override

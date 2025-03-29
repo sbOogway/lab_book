@@ -58,7 +58,10 @@
             </HBox>
 
          </children>
+
+      
       </HBox>
+      
 
       <VBox fx:id="vboxReview" alignment="CENTER_LEFT" maxHeight="-Infinity"
          minHeight="-Infinity" opacity="0.0" prefHeight="500.0" prefWidth="800.0" spacing="10.0"
@@ -220,7 +223,7 @@
                         <Label fx:id="labelBookCategory" text="" />
                         <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="" />
                         <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
-                           text="Publisher" />
+                           text="" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="300.0">
@@ -267,6 +270,9 @@
                         text="title" />
                      <Button fx:id="buttonQueryAuthor" maxWidth="75.0" mnemonicParsing="false"
                         prefWidth="75.0" text="author" />
+                     
+                     <TextField fx:id="yearQuery"/>
+                     <Button fx:id="yearQueryButton" text="year"/>
 
                   </children>
                </HBox>
