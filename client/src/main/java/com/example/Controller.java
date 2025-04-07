@@ -260,7 +260,7 @@ public class Controller {
         viewPage(buttonSignup, vboxSignup);
         viewPage(buttonLibrary, vboxLibrary);
 
-        System.out.println("init controller");
+        // System.out.println("init controller");
 
         // query author year
         yearQueryButton.setOnAction(e -> {

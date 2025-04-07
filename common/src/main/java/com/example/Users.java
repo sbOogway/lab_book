@@ -20,6 +20,8 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
 
     public ArrayList<User> c = new ArrayList<>();
     String dbUrl;
+    String user;
+    String pass;
 
     /**
      * reads database content for utentiregistrati table
@@ -27,7 +29,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
     private void readDatabase() {
         this.c = new ArrayList<>();
         String sql = "SELECT * FROM utentiregistrati order by id;";
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
 
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
@@ -38,7 +40,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
 
                 User b = new User("", "", "", "", userid, password);
 
-                var c2 = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+                var c2 = Utils.connect(dbUrl, this.user, this.pass);
                 var libs = Utils.queryDB(c2, String.format("select * from librerie where userid = %d;", id));
                 List<Library> userLibs = new ArrayList<Library>();
                 while (libs.next()) {
@@ -51,8 +53,8 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
                             .collect(Collectors.toList());
 
                     // System.out.println(libri[0]);
-                    System.out.println(stream);
-                    System.out.println(stream.size());
+                    // System.out.println(stream);
+                    // System.out.println(stream.size());
 
                     Library lib = new Library(libs.getString("nome_libreria"), stream);
                     userLibs.add(lib);
@@ -60,7 +62,7 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
                 }
                 b.setLibrary(userLibs);
 
-                System.out.println(userLibs);
+                // System.out.println(userLibs);
 
                 add(b);
 
@@ -76,7 +78,9 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
      * @param dbUrl
      * @throws RemoteException
      */
-    public Users(String dbUrl) throws RemoteException {
+    public Users(String dbUrl, String user, String pass) throws RemoteException {
+        this.user = user;
+        this.pass = pass;
         this.dbUrl = dbUrl;
         readDatabase();
 
@@ -137,10 +141,10 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
                 "INSERT INTO utentiregistrati (userid, nome, cognome, codice_fiscale, email, password) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
                 userName, nome, cognome, codiceFiscale, email, password);
 
-        var conn = Utils.connect(this.dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(this.dbUrl, this.user, this.pass);
         boolean f = true;
         try (conn) {
-            System.out.println(Utils.queryDB(conn, sql));
+            // System.out.println(Utils.queryDB(conn, sql));
             // this.c = new ArrayList<>();
             // readDatabase();
 

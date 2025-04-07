@@ -30,7 +30,14 @@ public class Client extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+        // Scanner s = new Scanner(System.in);
+        // System.out.print("insert address of rmi host: ");
+        var rmiHost = "localhost"; // s.nextLine();
+        // s.close();
+
+
+
+        Registry registry = LocateRegistry.getRegistry(rmiHost, 1099);
         books = (BooksInterface) registry.lookup("books");
         users = (UsersInterface) registry.lookup("users");
 
@@ -40,7 +47,7 @@ public class Client extends Application {
         // StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("v2.fxml"));
         // FXMLLoader loader = new FXMLLoader();
         URL fxmlURL = getClass().getResource("v2.fxml");
-        System.out.println(fxmlURL);
+        // System.out.println(fxmlURL);
         Parent homeRoot =  FXMLLoader.load(fxmlURL);
 
         Scene scene = new Scene(homeRoot, 1920, 1080);
@@ -51,6 +58,7 @@ public class Client extends Application {
         stage.setTitle("Book Recommender");
         stage.setScene(scene);
         stage.show();
+
     }
 
     /**

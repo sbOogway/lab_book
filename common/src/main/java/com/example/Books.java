@@ -20,6 +20,8 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
 
     ArrayList<Book> c = new ArrayList<>();
     String dbUrl = "";
+    String user = "";
+    String pass = "";
 
     // TODO pass user and pass as arguments
     /**
@@ -29,7 +31,8 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      */
     private void readDatabase() throws RemoteException {
         String sql = "SELECT * FROM libri order by id;";
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        // var conn = Utils.connect(dbUrl, this.user, this.pass);
+        var conn = Utils.connect(dbUrl, user, pass);
 
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
@@ -58,7 +61,9 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      *
      * @param dbUrl
      */
-    public Books(String dbUrl) throws RemoteException {
+    public Books(String dbUrl, String user, String pass) throws RemoteException {
+        this.user = user;
+        this.pass = pass;
         this.dbUrl = dbUrl;
         readDatabase();
 
@@ -127,9 +132,9 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     @Override
     public boolean createLibrary(String user, String nome, String libri) throws RemoteException {
 
-        System.out.println(libri);
+        // System.out.println(libri);
         String sql = String.format("INSERT INTO Librerie (nome_libreria, userid, libri) VALUES ('%s', (SELECT id from utentiregistrati where userid = '%s'), %s);", nome, user, libri);
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
 
         try (conn) {
             Utils.queryDB(conn, sql);
@@ -181,7 +186,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         int votofinale = (stile + contenuto + gradevolezza + originalita + edizione) / 5;
         String sql = String.format("insert into valutazionilibri (utente_id, libro_id, stile, contenuto, gradevolezza, originalita, edizione, voto_finale, note) values ((select id from utentiregistrati where userid = '%s'), (select id from libri where titolo = '%s'), %d, %d, %d, %d, %d, %d, '%s' );", user, book, stile, contenuto, gradevolezza, originalita, edizione, votofinale, notes);
 
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
 
         try (conn) {
             Utils.queryDB(conn, sql);
@@ -211,14 +216,14 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
     public List<Review> getReviews(String title) {
         String sql = String.format("select * from valutazionilibri  join utentiregistrati on utentiregistrati.id = valutazionilibri.utente_id where libro_id = (select id from libri where titolo = '%s');", title);
 
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
 
         List<Review> result = new ArrayList<>();
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {
 
-                System.out.println(rs.getString("userid"));
+                // System.out.println(rs.getString("userid"));
 
                 Review rev = new Review(
                         rs.getInt("stile"),
@@ -271,7 +276,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
                 + "(select id from libri where titolo = '%s'));",
                 book, user, book1, book2, book3);
 
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
 
         try (conn) {
             Utils.queryDB(conn, sql);
@@ -303,7 +308,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
 
         var result = new ArrayList<Map<String, Object>>();
 
-        var conn = Utils.connect(dbUrl, System.getenv("DB_USER"), System.getenv("DB_PASS"));
+        var conn = Utils.connect(dbUrl, this.user, this.pass);
         try (conn) {
             var rs = Utils.queryDB(conn, sql);
             while (rs.next()) {

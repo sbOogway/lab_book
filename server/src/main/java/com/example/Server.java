@@ -3,11 +3,9 @@
  * @version 1.0
  * @since 1.0
  */
-
 package com.example;
 
 // import com.example.common;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -45,15 +43,14 @@ public class Server {
      */
     public static String PASS = System.getenv("DB_PASS");
 
-    /**        
-     * the url of the database 
+    /**
+     * the url of the database
      */
     public static String URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
 
-    
-    /** 
+    /**
      * initialize the database from data/init.sql script
-     * 
+     *
      * @throws SQLException
      * @throws IOException
      */
@@ -101,6 +98,7 @@ public class Server {
 
     /**
      * launch the server
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -108,16 +106,26 @@ public class Server {
         try {
             // initDb();
 
-            Books books = new Books(URL);
-            Users users = new Users(URL);
+            Scanner s = new Scanner(System.in);
+            System.out.print("host of database: ");
+            HOST = s.nextLine();
+            System.out.print("port of database: ");
+            PORT = s.nextLine();
+            System.out.print("user of database: ");
+            USER = s.nextLine();
+            System.out.print("pass of database: ");
+            PASS = s.nextLine();
 
+            URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
+
+            Books books = new Books(URL, USER, PASS);
+            Users users = new Users(URL, USER, PASS);
 
             Registry registry = LocateRegistry.createRegistry(1099);
 
             registry.rebind("books", books);
             registry.rebind("users", users);
 
-            Scanner s = new Scanner(System.in);
             System.out.println("press enter to stop the server");
             s.nextLine();
             s.close();

@@ -1,4 +1,6 @@
 \documentclass{report}
+\usepackage{hyperref} 
+\usepackage{graphicx}
 
 \title{Manuale Utente - Book Recommender}
 \author{Mattia Papaccioli - 747053 - CO}
@@ -9,16 +11,63 @@
 
 \tableofcontents
 
-\section{Installazione}
-\subsection{Download eseguibile}
-Per installare 
+\chapter{Installazione}
+\section{Download eseguibile}
+Per eseguire il programma Book Recommender e necessario scaricarlo al seguente link \url{https://github.com/sbOogway/lab_book/releases/tag/v1.0}. 
+Selezionare il client in base al proprio sistema operativo. 
+Infine eseguirlo con doppio click o con i comandi seguenti
 
-\subsection{Building from source}
-\subsubsection{Windows}
-\subsubsection{Linux/MacOS}
+\subsection{Server}
+\texttt{java -jar server-1.0.jar}
 
 \subsection{Client}
-\subsubsection{Windows}
-\subsubsection{Linux/MacOS}
+\texttt{java -jar client-1.0-linux.jar}
+
+
+\section{Building from source}
+\subsection{Dependencies}
+Sono richiesti git maven e java per buildare l applicazione.
+\url{https://maven.apache.org/install.html}
+\subsection{Commands}
+Clonare la repo. \\ \\
+\verb+git clone https://github.com/sbOogway/lab_book+ \\ \\
+Build it. \\ \\
+\verb+cd lab_book+ \\ \\
+\verb+mvn clean install+ \\ \\
+i file jar si trovano in \verb+client/target/client.jar+ e in \verb+server/target/server.jar+
+
+\chapter{Esecuzione}
+\section{Server}
+Prima di eseguire il server e necessario creare un database postgres con il nome \verb+book+. 
+Eseguire il server tramite il comando \\ \\ 
+\verb+java -jar server.jar+\\ \\
+all avvio inserire l indirizzo dell host del database, la porta del database, l username del database e la password del database. \\ \\
+
+\includegraphics[width=\linewidth]{pics/server.png}
+
+dopo aver lanciato il server viene esposto un servizio rmi sulla porta 1099.
+
+
+\section{Client}
+Per eseguire il client fare doppio click sul jar del client oppure eseguire il jar da linea di comando.
+
+Per consultare libri nel database schiacciare il tasto query in alto a destra. \\ \\
+\includegraphics[width=\linewidth]{pics/query.png} \\ \\
+Per registrarsi all applicazione schiacciare il tasto signup in alto a destra. \\ \\
+\includegraphics[width=\linewidth]{pics/signup.png} \\ \\
+Per fare login schiacciare il tasto login in alto a destra. \\ \\
+\includegraphics[width=\linewidth]{pics/login.png} \\ \\
+Per vedere le proprie librerie schiacciare il tasto libraries in alto a destra. \\ \\ 
+\includegraphics[width=\linewidth]{pics/libs.png} \\ \\
+Per creare recensioni e suggerimenti schiacciare l apposito tasto di fianco ad ogni libro. \\ \\ 
+\includegraphics[width=\linewidth]{pics/rev_and_sugg.png} \\ \\
+
+\chapter{Limiti della soluzione sviluppata}
+\section{No more books}
+Massimo tre suggerimenti per libro. \\ \\
+Massimo 256 caratteri per note nelle recensioni. \\ \\
+Non e possibile aggiungere libri al database. \\ \\ % o forse si tramite sqlinjection ;) \\ \\
+\section{Note}
+Non tutti i libri creati nella storia sono presenti nel database. 
 
 \end{document}
