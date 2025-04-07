@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Users class
+ * Users interface for rmi allows communication between client and server for book related queries
  */
 public class Users extends UnicastRemoteObject implements UsersInterface {
 

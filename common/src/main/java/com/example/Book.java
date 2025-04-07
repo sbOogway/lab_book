@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Sewy
+ * Book helper class 
  */
 public class Book implements Serializable{
     /**
@@ -102,9 +102,19 @@ public class Book implements Serializable{
     public String getAuthor() {
         return this.authors;
     }
+    /**
+     * author field getter.
+     *
+     * @return the book category.
+     */
     public String getCategory() {
         return this.category;
     }
+    /**
+     * author field getter.
+     *
+     * @return the book publisher.
+     */
     public String getPublisher() {
         return this.publisher;
     }

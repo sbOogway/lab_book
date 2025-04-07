@@ -15,6 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * javafx client initialization
+ */
 public class Client extends Application {
 
     public static BooksInterface books;

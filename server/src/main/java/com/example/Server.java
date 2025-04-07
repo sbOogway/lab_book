@@ -23,13 +23,31 @@ import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * class for the server module
+ */
 public class Server {
 
+    /**
+     * the host of the db
+     */
     public static String HOST = System.getenv("DB_HOST"); // "root"
+    /**
+     * the port of the db
+     */
     public static String PORT = System.getenv("DB_PORT"); // "root"
+    /**
+     * the username of the db
+     */
     public static String USER = System.getenv("DB_USER"); // "user"; // "root"
+    /**
+     * the password of the db
+     */
     public static String PASS = System.getenv("DB_PASS");
 
+    /**        
+     * the url of the database 
+     */
     public static String URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
 
     

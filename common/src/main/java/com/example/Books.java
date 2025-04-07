@@ -12,12 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Books interface for rmi allows communication between client and server for book related queries
+ */
 @SuppressWarnings("CallToPrintStackTrace")
 public class Books extends UnicastRemoteObject implements BooksInterface {
 
     ArrayList<Book> c = new ArrayList<>();
     String dbUrl = "";
 
+    // TODO pass user and pass as arguments
     /**
      * read database libri table
      *
