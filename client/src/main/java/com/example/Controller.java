@@ -38,7 +38,7 @@ import javafx.stage.Stage;
  */
 public class Controller {
 
-    public static FXMLLoader loader = new FXMLLoader();
+    // public static FXMLLoader loader = new FXMLLoader();
     private boolean login = true;
     private String user = "matia";
     // private int userid = 1;
@@ -726,8 +726,8 @@ public class Controller {
      * @return A FileInputStream for the specified FXML file.
      * @throws FileNotFoundException If the specified file is not found.
      */
-    public static FileInputStream getFxml(String name) throws FileNotFoundException {
-        return new FileInputStream(Paths.get("resources", name).toString());
-    }
+    // public static FileInputStream getFxml(String name) throws FileNotFoundException {
+    //     return new FileInputStream(Paths.get("resources", name).toString());
+    // }
 
 }

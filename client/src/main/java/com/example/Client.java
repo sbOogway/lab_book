@@ -5,14 +5,14 @@
  */
 package com.example;
 
-import java.io.File;
-import java.nio.file.Paths;
+import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -34,13 +34,20 @@ public class Client extends Application {
         books = (BooksInterface) registry.lookup("books");
         users = (UsersInterface) registry.lookup("users");
 
-        File css = new File(Paths.get("resources", "style.css").toString());
-        System.out.println(css.getAbsolutePath());
+        // File css = new File("style.css"); // Paths.get("resources", "style.css").toString());
+        // System.out.println(css.getAbsolutePath());
 
-        StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("v2.fxml"));
+        // StackPane homeRoot = (StackPane) Controller.loader.load(Controller.getFxml("v2.fxml"));
+        // FXMLLoader loader = new FXMLLoader();
+        URL fxmlURL = getClass().getResource("v2.fxml");
+        System.out.println(fxmlURL);
+        Parent homeRoot =  FXMLLoader.load(fxmlURL);
 
         Scene scene = new Scene(homeRoot, 1920, 1080);
-        scene.getStylesheets().add("file://" + css.getAbsolutePath().replace("\\", "/"));
+        // URL styleURL = getClass().getResource("style.css");
+        // System.out.println(styleURL);
+
+        // scene.getStylesheets().add(styleURL.toExternalForm());
         stage.setTitle("Book Recommender");
         stage.setScene(scene);
         stage.show();

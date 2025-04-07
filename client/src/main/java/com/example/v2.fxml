@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller"
+>
+   <!-- need to add vbox here -->
+   <children>
+      <HBox
+         style="-fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 2 0;">
+
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Book Recommender">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+
+            <Pane HBox.hgrow="ALWAYS" />
+
+            <HBox alignment="TOP_CENTER" prefHeight="35.0" spacing="10.0">
+               <children>
+
+                  <Label fx:id="labelLoginStatus" alignment="CENTER_RIGHT" minWidth="100.0"
+                     prefHeight="25.0" text="not logged in" textAlignment="RIGHT" />
+                  <!-- <Button fx:id="buttonHome" alignment="CENTER_RIGHT"
+                        contentDisplay="RIGHT"
+                     minWidth="-Infinity" mnemonicParsing="false" text="home" /> -->
+
+                  <Button fx:id="buttonLogin" minWidth="-Infinity" mnemonicParsing="false"
+                     prefHeight="25.0" prefWidth="48.0" text="login" />
+                  <Button fx:id="buttonQuery" minWidth="-Infinity" mnemonicParsing="false"
+                     text="query" />
+                  <Button fx:id="buttonSignup" minWidth="-Infinity" mnemonicParsing="false"
+                     text="signup" />
+                  <Button fx:id="buttonLibrary" minWidth="-Infinity" mnemonicParsing="false"
+                     text="libraries" />
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </HBox>
+
+         </children>
+
+      
+      </HBox>
+      
+
+      <VBox fx:id="vboxReview" alignment="CENTER_LEFT" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="500.0" prefWidth="800.0" spacing="10.0"
+      >
+         <padding>
+            <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+         </padding>
+         <children>
+            <!-- <Label text="adding review for"/> -->
+            <Label fx:id="labelBookTitleReview" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <!-- <Label fx:id="labelBookIdReview"/> -->
+
+
+            <HBox spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="stile" />
+                  <TextField fx:id="stile" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="contenuto" />
+                  <TextField fx:id="contenuto" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+
+
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="gradevolezza" />
+                  <TextField fx:id="gradevolezza" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+
+
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="originalita" />
+                  <TextField fx:id="originalita" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="edizione" />
+                  <TextField fx:id="edizione" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+
+
+            <Label text="note" />
+            <TextField fx:id="note" />
+
+            <Button fx:id="buttonAddReview" text="add review" />
+
+         </children>
+
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+
+      </VBox>
+
+      <VBox fx:id="vboxSuggestion" alignment="CENTER_LEFT" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="800.0" prefWidth="800.0" spacing="10.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label fx:id="labelBookTitleSuggestion"
+               style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+            <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="querySugg" prefWidth="560.0" text="" />
+
+                  <Label prefHeight="25.0" text="look by" />
+                  <Button fx:id="buttonQueryTitleSugg" mnemonicParsing="false" prefWidth="75.0"
+                     text="title" />
+                  <Button fx:id="buttonQueryAuthorSugg" maxWidth="75.0" mnemonicParsing="false"
+                     prefWidth="75.0" text="author" />
+
+               </children>
+            </HBox>
+
+            <ListView fx:id="bookQuerySugg" />
+            <ListView fx:id="booksToAddSugg" />
+
+            <Button fx:id="buttonAddSuggestion" text="add suggestions" />
+
+         </children>
+
+      </VBox>
+
+
+      <VBox fx:id="vboxLibrary" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="500.0" prefWidth="800.0">
+         <children>
+            <Button fx:id="buttonCreateLibrary" text="create library" />
+            <ListView fx:id="listViewLibrary" prefHeight="375.0" prefWidth="800.0">
+            </ListView>
+
+         </children>
+      </VBox>
+
+      <VBox fx:id="vboxViewLibrary" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="500.0" prefWidth="800.0"
+      >
+         <children>
+            <ListView fx:id="userViewLibrary" />
+         </children>
+
+      </VBox>
+
+      <VBox fx:id="vboxCreateLibrary" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0" prefHeight="800.0" prefWidth="800.0">
+         <children>
+
+            <VBox prefHeight="800.0" prefWidth="800.0" spacing="10.0">
+               <Label text="libraryName" />
+               <TextField fx:id="libraryName" />
+               <Label text="Look for a book" />
+               <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
+                  <children>
+                     <TextField fx:id="queryLib" prefWidth="560.0" text="" />
+
+                     <Label prefHeight="25.0" text="look by" />
+                     <Button fx:id="buttonQueryTitleLib" mnemonicParsing="false" prefWidth="75.0"
+                        text="title" />
+                     <Button fx:id="buttonQueryAuthorLib" maxWidth="75.0" mnemonicParsing="false"
+                        prefWidth="75.0" text="author" />
+
+                  </children>
+               </HBox>
+               <ListView fx:id="bookQueryLib" />
+
+               <ListView fx:id="booksToAddLib" />
+
+               <Button fx:id="createLibrary" text="create library" />
+
+
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+
+      <VBox fx:id="vboxBook" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity"
+         prefHeight="800" prefWidth="800.0" spacing="10.0">
+         <children>
+            <Label fx:id="labelBookTitle" style="-fx-font-size: 18px;" text="" />
+            <HBox>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="labelBookAuthor" text="" />
+                        <Label fx:id="labelBookCategory" text="" />
+                        <Label fx:id="labelBookYear" layoutX="10.0" layoutY="10.0" text="" />
+                        <Label fx:id="labelBookPublisher" layoutX="10.0" layoutY="10.0"
+                           text="" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="stileMedia" />
+                        <Label fx:id="contenutoMedia" />
+                        <Label fx:id="gradevolezzaMedia" />
+                        <Label fx:id="originalitaMedia" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="edizioneMedia" />
+                        <Label fx:id="votoFinaleMedia" />
+                        <Label fx:id="numeroRecensioni" />
+                        <Label fx:id="numeroSuggerimenti" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox spacing="10.0">
+               <children>
+                  <ListView fx:id="reviewsList" prefWidth="1500.0" />
+                  <ListView fx:id="suggestionsList" prefWidth="1500.0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="vboxQuery" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0" prefHeight="800" prefWidth="800.0">
+         <children>
+
+            <VBox prefHeight="800" prefWidth="780.0">
+               <Label text="Look for a book" />
+               <HBox prefHeight="100.0" prefWidth="500.0" spacing="10.0">
+                  <children>
+                     <TextField fx:id="query" prefWidth="560.0" text="" />
+
+                     <Label prefHeight="25.0" text="look by" />
+                     <Button fx:id="buttonQueryTitle" mnemonicParsing="false" prefWidth="75.0"
+                        text="title" />
+                     <Button fx:id="buttonQueryAuthor" maxWidth="75.0" mnemonicParsing="false"
+                        prefWidth="75.0" text="author" />
+                     
+                     <TextField fx:id="yearQuery"/>
+                     <Button fx:id="yearQueryButton" text="year"/>
+
+                  </children>
+               </HBox>
+               <ListView fx:id="bookQuery" prefHeight="600" prefWidth="500.0" />
+
+
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="vboxSignup" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+         opacity="0.0"
+         prefHeight="279.0" prefWidth="800.0" spacing="10">
+         <children>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="username" />
+                  <TextField fx:id="usernameSignup" prefHeight="35.0" text="" />
+
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="nome" />
+                  <TextField fx:id="nomeSignup" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="cognome" />
+                  <TextField fx:id="cognomeSignup" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="codice fiscale" />
+                  <TextField fx:id="codiceFiscaleSignup" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="email" />
+                  <TextField fx:id="emailSignup" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="password" />
+                  <PasswordField fx:id="passwordSignup" prefHeight="35.0" text="" />
+                  <Button fx:id="submitSignup" mnemonicParsing="false" prefHeight="35.0"
+                     text="signup" />
+               </children>
+            </HBox>
+         </children>
+
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="vboxLogin" alignment="CENTER" maxHeight="-Infinity"
+         minHeight="-Infinity" opacity="0.0" prefHeight="128.0" prefWidth="800.0" spacing="10.0">
+         <children>
+            <HBox prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="username" />
+                  <TextField fx:id="userLogin" prefHeight="35.0" text="" />
+               </children>
+            </HBox>
+            <HBox layoutX="20.0" layoutY="37.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="75.0" text="password" />
+                  <PasswordField fx:id="passwordLogin" prefHeight="35.0" text="" />
+                  <Button fx:id="submitLogin" mnemonicParsing="false" prefHeight="35.0" text="login" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</StackPane>
