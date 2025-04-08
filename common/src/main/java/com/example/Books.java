@@ -60,6 +60,8 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      * construct books object and read database
      *
      * @param dbUrl
+     * @param user 
+     * @param pass
      */
     public Books(String dbUrl, String user, String pass) throws RemoteException {
         this.user = user;
@@ -124,7 +126,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      *
      * @param user The user ID of the person creating the library.
      * @param nome The name of the library to be created.
-     * @par m libri A string representing the list of books associated with the
+     * @param libri A string representing the list of books associated with the
      * library.
      * @return True if the library was successfully created; false otherwise.
      * @throws RemoteException if a remote communication error occurs.
@@ -176,7 +178,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      * @param originalita The rating for the originality of the book.
      * @param edizione The rating for the edition of the book.
      * @param notes Additional notes or comments about the review.
-     * @ret rn True if the review was successfully created; false otherwise.
+     * @return True if the review was successfully created; false otherwise.
      * @throws RemoteException if a remote communication error occurs.
      */
     @Override
@@ -258,7 +260,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      * @param user The user ID of the person making the suggestion.
      * @param book The title of the book for which suggestions are being made.
      * @param book1 The title of the first suggested book.
-     * @par m book2 The title of the second suggested book.
+     * @param book2 The title of the second suggested book.
      * @param book3 The title of the third suggested book.
      * @return True if the suggestion was successfully created; false otherwise.
      * @throws RemoteException if a remote communication error occurs.
@@ -296,11 +298,11 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      * where each map contains the user ID and the titles of the suggested
      * books.
      *
-     * @par m title The title of the book for which suggestions are to be
+     * @param title The title of the book for which suggestions are to be
      * retrieved.
-     * @ret rn A list of maps containing user IDs and suggested book titles, or
+     * @return A list of maps containing user IDs and suggested book titles, or
      * null if an error occurs.
-     * @throws emoteException if a remote communication error occurs.
+     * @throws RemoteException if a remote communication error occurs.
      */
     @Override
     public List<Map<String, Object>> getSuggestions(String title) throws RemoteException {

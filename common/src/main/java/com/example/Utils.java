@@ -38,7 +38,7 @@ public class Utils {
      * string should be in the format "{key1=value1, key2=value2, ...}".
      *
      * @param d The string representation of the map.
-     * @return A Map<String, Object> containing the parsed key-value pairs.
+     * @return parsed key-value pairs.
      */
     public static Map<String, Object> parseMap(String d) {
         return Arrays.stream(d.substring(1, d.length() - 1).trim().split(", "))
@@ -119,7 +119,7 @@ public class Utils {
      * "{key1: value1, key2: value2, ...}". The resulting map will have keys as
      * strings and values as either strings, integers, doubles, booleans, or null.
      * @param json The JSON string to convert to a map.
-     * @return A Map<String, Object> containing the parsed key-value pairs.
+     * @return parsed key-value pairs.
      */
     public static Map<String, Object> jsonToMap(String json) {
         Map<String, Object> map = new HashMap<>();

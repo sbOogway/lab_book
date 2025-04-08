@@ -7,7 +7,10 @@ docs:
 	# unsetopt correct_all
 	pdflatex  -output-directory=doc/ doc/ManualeUtente.tex
 	pdflatex  -output-directory=doc/ doc/ManualeTecnico.tex
-
+	mvn javadoc:javadoc
+	cp -r common/target/reports/apidocs doc/common/
+	cp -r server/target/reports/apidocs doc/server/
+	cp -r client/target/reports/apidocs doc/client/
 
 server:
 	java -jar server/target/server-1.0-jar-with-dependencies.jar

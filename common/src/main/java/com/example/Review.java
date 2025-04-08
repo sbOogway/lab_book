@@ -24,9 +24,6 @@ public class Review implements  Serializable {
 
     /**
      * review constructor
-     *
-     * @param l a list of Valutazione, one for each category. @see Valutazione
-     * @param owner the userid of the Review writer.
      */
     public Review(int stile, int contenuto, int gradevolezza, int originalita, int edizione, String owner, String notes) {
         this.owner = owner;

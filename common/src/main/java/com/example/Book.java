@@ -42,6 +42,8 @@ public class Book implements Serializable{
      * @param publisher the publisher of the book.
      * @param category the category of the book.
      * @param year the publication year of the book.
+     * @param id id book
+     * @throws RemoteException
      */
     public Book(String title, String authors, String publisher, String category, short year, int id) throws RemoteException {
         this.title = title;
@@ -58,6 +60,7 @@ public class Book implements Serializable{
      *
      * @param csvLine the csvLine read from file. we create one object for each
      * line read in the file.
+     * @throws RemoteException
      */
     public Book(String csvLine) throws RemoteException {
         String[] infos = csvLine.split(",");
