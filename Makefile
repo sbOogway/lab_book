@@ -1,10 +1,12 @@
-.PHONY: server client
+.PHONY: server client docs
 
 run:
 	export $(cat .env | xargs)
 
 docs:
+	# unsetopt correct_all
 	pdflatex  -output-directory=doc/ doc/ManualeUtente.tex
+	pdflatex  -output-directory=doc/ doc/ManualeTecnico.tex
 
 
 server:

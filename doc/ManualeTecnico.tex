@@ -1,6 +1,8 @@
 \documentclass{report}
 \usepackage{hyperref} 
 \usepackage{graphicx}
+\usepackage[font=small,labelfont=bf]{caption}
+% \usepackage[a4paper, right=2cm, left=2cm, top=2cm]{geometry} 
 
 \title{Manuale Utente - Book Recommender}
 \author{Mattia Papaccioli - 747053 - CO}
@@ -10,3 +12,22 @@
 \maketitle
 
 \tableofcontents
+
+
+\chapter{Struttura}
+\section{Descrizione}
+L'applicazione ha un archittetura client server basata su java rmi. Questa struttura permette gestione della concorrenza e distribuzione del servizio. Il database puo essere esterno e non e necessario che sia hostato sulla stessa macchina del server. Senza un server rmi attivo il client non puo eseguire.
+
+\chapter{Database}
+\includegraphics[width=\linewidth]{pics/er.png} 
+\captionof{figure}{er schema} 
+
+\chapter{Uml}
+\includegraphics[width=\linewidth]{pics/client_uml.jpg}
+\captionof{figure}{Client uml} 
+\includegraphics[width=\linewidth]{pics/common_uml.jpeg} 
+\captionof{figure}{Common uml} 
+\includegraphics[width=\linewidth]{pics/server_uml.jpg} 
+\captionof{figure}{Server uml} 
+Entrambi i moduli \verb+client+ e \verb+server+ utilizzano il modulo \verb+common+. Di particolare importanza sono le interfacce \verb+UsersInterface+ e \verb+Booksinterface+ che permettono la comunicazione tramite java rmi. Le classi \verb+Library+ e \verb+Review+ sono utilizzate per la serializzazione in java rmi e la classe \verb+Util+ contiene metodi utilitari.
+\end{document}

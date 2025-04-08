@@ -118,6 +118,8 @@ public class Server {
 
             URL = String.format("jdbc:postgresql://%s:%s/book", HOST, PORT);
 
+            // initDb();
+
             Books books = new Books(URL, USER, PASS);
             Users users = new Users(URL, USER, PASS);
 
