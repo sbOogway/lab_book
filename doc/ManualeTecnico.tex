@@ -192,7 +192,13 @@ CREATE INDEX idx_consigli_libro ON ConsigliLibri(libro_id);
     \item L'organizzazione del database è stata progettata per sostenere operazioni CRUD efficienti e query complesse relative a libri, valutazioni e suggerimenti, supportata da indici strategici per l'ottimizzazione delle prestazioni.
 \end{itemize}
 
-Durante lo sviluppo del progetto, il database e stato modificato solo una volta cambiando colonne 
+Durante lo sviluppo del progetto, il database e stato modificato solo una volta cambiando 3 colonne per i suggerimenti con un array. 
+
+
+\begin{center}
+\includegraphics[scale=0.4]{pics/db_refactor.png} 
+\captionof{figure}{git diff of database init script} 
+\end{center}
 
 \chapter{Uml}
 \includegraphics[width=\linewidth]{pics/client_uml.jpg}
@@ -201,7 +207,10 @@ Durante lo sviluppo del progetto, il database e stato modificato solo una volta 
 \captionof{figure}{Common uml} 
 \includegraphics[width=\linewidth]{pics/server_uml.jpg} 
 \captionof{figure}{Server uml} 
+\includegraphics[width=\linewidth]{pics/sequence.png} 
+\captionof{figure}{Sequence diagram} 
 \subsection{Modules}
+
 \begin{itemize}
     \item \verb+client+ $ \Rightarrow $ Scritto in javafx, interagisce con il server per mostrare all utente la repository di libri e per salvare le proprie librerie. E comoposto da una \verb+classe+ main che lancia il programma e dal \verb+controller+ che gestisce la logica dell interazione dell utente. La struttura vera e propria dell'interfaccia e scritta in \verb+fxml+
     \item \verb+server+ $ \Rightarrow $ Si interfaccia con un database postgres per i dati ed espone un servizio rmi per l'interazione con il client.
@@ -210,5 +219,6 @@ Durante lo sviluppo del progetto, il database e stato modificato solo una volta 
 Entrambi i moduli \verb+client+ e \verb+server+ utilizzano il modulo \verb+common+. Di particolare importanza sono le interfacce \verb+UsersInterface+ e \verb+Booksinterface+ che permettono la comunicazione tramite java rmi. Le classi \verb+Library+ e \verb+Review+ sono utilizzate per la serializzazione in java rmi e la classe \verb+Util+ contiene metodi utilitari.
 
 \chapter{Pattern}
+Viene utilizzato il pattern Client-Server per garantire controllo dei dati, distributività, concorrenza e modularita dell'applicazione.
 Viene utilizzato il pattern MVC (Model View Controller). Il \verb+model+ è l'interazione da parte del server con il database, la \verb+view+ e rappresentata dal codice \verb+fxml+ e il \verb+controller+ e contenuto nel modulo \verb+client+. 
 \end{document}
