@@ -3,7 +3,19 @@
 \usepackage{graphicx}
 \usepackage[font=small,labelfont=bf]{caption}
 % \usepackage[a4paper, right=2cm, left=2cm, top=2cm]{geometry} 
-
+\usepackage{listings}
+\usepackage{color}
+\lstset{
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    numberstyle=\tiny\color{white},
+    stepnumber=1,
+    numbersep=10pt,
+    breaklines=true,
+    frame=single,
+    language=SQL,
+    showstringspaces=false
+}
 \title{Manuale Utente - Book Recommender}
 \author{Mattia Papaccioli - 747053 - CO}
 
@@ -16,11 +28,171 @@
 
 \chapter{Struttura}
 \section{Descrizione}
-L'applicazione ha un archittetura client server basata su java rmi. Questa struttura permette gestione della concorrenza e distribuzione del servizio. Il database puo essere esterno e non e necessario che sia hostato sulla stessa macchina del server. Senza un server rmi attivo il client non puo eseguire.
+L'applicazione ha un archittetura client server basata su java rmi. Questa struttura permette gestione della concorrenza e distribuzione del servizio. Il database puo essere esterno e non e necessario che sia hostato sulla stessa macchina del server. Senza un server rmi attivo il client non puo eseguire. E necessaria quindi una connesione di rete per eseguire il programma.
 
 \chapter{Database}
-\includegraphics[width=\linewidth]{pics/er.png} 
+\begin{center}
+\includegraphics[scale=0.4]{pics/er.png} 
 \captionof{figure}{er schema} 
+\end{center}
+
+Questo documento descrive in dettaglio lo script SQL utilizzato per la creazione e inizializzazione del database dedicato alla gestione di:
+\begin{itemize}
+    \item Utenti registrati
+    \item Librerie personali
+    \item Libri
+    \item Valutazioni dei libri
+    \item Suggerimenti di libri
+\end{itemize}
+
+Lo script implementa la struttura relazionale del database definendo le tabelle, i relativi vincoli di integrità (chiavi primarie, chiavi esterne, vincoli di unicità e vincoli \texttt{CHECK}) e indici per ottimizzare le operazioni di ricerca.
+
+\section{Descrizione delle Tabelle}
+
+\subsection{Tabella \texttt{UtentiRegistrati}}
+Questa tabella memorizza le informazioni degli utenti registrati.
+
+\begin{lstlisting}
+CREATE TABLE UtentiRegistrati (
+    id SERIAL PRIMARY KEY,
+    userid VARCHAR(100) UNIQUE NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    cognome VARCHAR(100) NOT NULL,
+    codice_fiscale VARCHAR(16) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{id}: Identificativo univoco, generato automaticamente tramite il tipo \texttt{SERIAL}.
+    \item \textbf{userid}: Nome utente univoco, vincolato da \texttt{UNIQUE} e non nullo.
+    \item \textbf{nome} e \textbf{cognome}: Dati anagrafici dell'utente, entrambe obbligatorie.
+    \item \textbf{codice\_fiscale} ed \textbf{email}: Campi univoci per ogni utente, vincolati da \texttt{UNIQUE} e non nulli.
+    \item \textbf{password}: Memorizza la password dell'utente, con una lunghezza massima di 255 caratteri.
+\end{itemize}
+
+\subsection{Tabella \texttt{Librerie}}
+Questa tabella gestisce le librerie personali degli utenti.
+
+\begin{lstlisting}
+CREATE TABLE Librerie (
+    id SERIAL PRIMARY KEY,
+    nome_libreria VARCHAR(100) NOT NULL,
+    userid INT NOT NULL,
+    libri INT[],
+    FOREIGN KEY (userid) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE
+);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{id}: Identificativo univoco della libreria.
+    \item \textbf{nome\_libreria}: Nome della libreria, campo obbligatorio.
+    \item \textbf{userid}: Riferimento all'utente proprietario della libreria. La chiave esterna punta a \texttt{UtentiRegistrati(id)} con eliminazione a cascata (\texttt{ON DELETE CASCADE}).
+    \item \textbf{libri}: Array di interi (\texttt{INT[]}) contenente gli identificativi dei libri presenti nella libreria.
+\end{itemize}
+
+\subsection{Tabella \texttt{Libri}}
+Questa tabella memorizza le informazioni relative ai libri.
+
+\begin{lstlisting}
+CREATE TABLE Libri (
+    id SERIAL PRIMARY KEY,
+    titolo VARCHAR(255) NOT NULL,
+    autore VARCHAR(255) NOT NULL,
+    editore VARCHAR(255),
+    categoria TEXT[],
+    anno INT CHECK (anno > 0)
+);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{id}: Identificativo univoco del libro.
+    \item \textbf{titolo} e \textbf{autore}: Informazioni fondamentali del libro, campi obbligatori.
+    \item \textbf{editore}: Campo opzionale per l'editore.
+    \item \textbf{categoria}: Array di categorie in cui il libro è classificato.
+    \item \textbf{anno}: Anno di pubblicazione, con un vincolo \texttt{CHECK} che assicura il valore positivo.
+\end{itemize}
+
+\subsection{Tabella \texttt{ValutazioniLibri}}
+Questa tabella registra le valutazioni assegnate dagli utenti ai libri.
+
+\begin{lstlisting}
+CREATE TABLE ValutazioniLibri (
+    id SERIAL PRIMARY KEY,
+    libro_id INT NOT NULL,
+    utente_id INT NOT NULL,
+    stile INT CHECK (stile BETWEEN 1 AND 5),
+    contenuto INT CHECK (contenuto BETWEEN 1 AND 5),
+    gradevolezza INT CHECK (gradevolezza BETWEEN 1 AND 5),
+    originalita INT CHECK (originalita BETWEEN 1 AND 5),
+    edizione INT CHECK (edizione BETWEEN 1 AND 5),
+    voto_finale INT CHECK (voto_finale BETWEEN 1 AND 5),
+    note VARCHAR(256),
+    FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE
+);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{id}: Identificativo univoco della valutazione.
+    \item \textbf{libro\_id}: Riferimento al libro valutato, con chiave esterna verso \texttt{Libri(id)}. L'eliminazione a cascata garantisce la coerenza dei dati.
+    \item \textbf{utente\_id}: Riferimento all'utente che ha effettuato la valutazione, collegato a \texttt{UtentiRegistrati(id)}.
+    \item Vari campi (\texttt{stile, contenuto, gradevolezza, originalita, edizione, voto\_finale}) rappresentano le diverse metriche di valutazione, ciascuna con un vincolo \texttt{CHECK} che ne limita i valori compresi tra 1 e 5.
+    \item \textbf{note}: Campo opzionale per eventuali commenti aggiuntivi.
+\end{itemize}
+
+\subsection{Tabella \texttt{ConsigliLibri}}
+Questa tabella contiene i suggerimenti di lettura basati su un libro di riferimento.
+
+\begin{lstlisting}
+CREATE TABLE ConsigliLibri (
+    id SERIAL PRIMARY KEY,
+    libro_id INT NOT NULL,
+    utente_id INT NOT NULL,
+    libro1_suggerito_id INT NOT NULL,
+    libro2_suggerito_id INT NOT NULL,
+    libro3_suggerito_id INT NOT NULL,
+    FOREIGN KEY (libro_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (utente_id) REFERENCES UtentiRegistrati(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro1_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro2_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro3_suggerito_id) REFERENCES Libri(id) ON DELETE CASCADE
+);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{id}: Identificativo univoco del consiglio.
+    \item \textbf{libro\_id}: Libro per il quale sono forniti i suggerimenti, chiave esterna verso \texttt{Libri(id)}.
+    \item \textbf{utente\_id}: Utente destinatario del consiglio, chiave esterna verso \texttt{UtentiRegistrati(id)}.
+    \item \textbf{libro1\_suggerito\_id, libro2\_suggerito\_id, libro3\_suggerito\_id}: Tre riferimenti a libri suggeriti, ognuno collegato alla tabella \texttt{Libri(id)}.
+\end{itemize}
+
+\section{Indici per il Miglioramento delle Performance}
+Per ottimizzare le operazioni di ricerca e filtraggio, sono stati creati i seguenti indici:
+
+\begin{lstlisting}
+CREATE INDEX idx_libro_autore ON Libri(autore);
+CREATE INDEX idx_valutazioni_libro ON ValutazioniLibri(libro_id);
+CREATE INDEX idx_consigli_libro ON ConsigliLibri(libro_id);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{idx\_libro\_autore}: Agevola le query che filtrano per autore nella tabella \texttt{Libri}.
+    \item \textbf{idx\_valutazioni\_libro}: Ottimizza l'accesso alle valutazioni di uno specifico libro nella tabella \texttt{ValutazioniLibri}.
+    \item \textbf{idx\_consigli\_libro}: Favorisce le query che recuperano i consigli associati a un determinato libro.
+\end{itemize}
+
+
+\section{Considerazioni Finali}
+\begin{itemize}
+    \item L'uso delle clausole \texttt{ON DELETE CASCADE} garantisce la coerenza referenziale eliminando automaticamente i record figli in caso di cancellazione di un record padre.
+    \item I vincoli \texttt{UNIQUE} sui campi critici (\texttt{userid}, \texttt{codice\_fiscale} e \texttt{email}) impediscono duplicazioni indesiderate.
+    \item I vincoli \texttt{CHECK} in varie tabelle (per l'anno in \texttt{Libri} e per le valutazioni in \texttt{ValutazioniLibri}) assicurano l'integrità dei dati inseriti.
+    \item L'organizzazione del database è stata progettata per sostenere operazioni CRUD efficienti e query complesse relative a libri, valutazioni e suggerimenti, supportata da indici strategici per l'ottimizzazione delle prestazioni.
+\end{itemize}
+
+Durante lo sviluppo del progetto, il database e stato modificato solo una volta cambiando colonne 
 
 \chapter{Uml}
 \includegraphics[width=\linewidth]{pics/client_uml.jpg}
@@ -29,5 +201,14 @@ L'applicazione ha un archittetura client server basata su java rmi. Questa strut
 \captionof{figure}{Common uml} 
 \includegraphics[width=\linewidth]{pics/server_uml.jpg} 
 \captionof{figure}{Server uml} 
+\subsection{Modules}
+\begin{itemize}
+    \item \verb+client+ $ \Rightarrow $ Scritto in javafx, interagisce con il server per mostrare all utente la repository di libri e per salvare le proprie librerie. E comoposto da una \verb+classe+ main che lancia il programma e dal \verb+controller+ che gestisce la logica dell interazione dell utente. La struttura vera e propria dell'interfaccia e scritta in \verb+fxml+
+    \item \verb+server+ $ \Rightarrow $ Si interfaccia con un database postgres per i dati ed espone un servizio rmi per l'interazione con il client.
+    \item \verb+commom+ $ \Rightarrow $ Contiene metodi di utilità comuni a \verb+client+ e \verb+server+. Contiene inoltre le interfacce \verb+java rmi+.
+\end{itemize}
 Entrambi i moduli \verb+client+ e \verb+server+ utilizzano il modulo \verb+common+. Di particolare importanza sono le interfacce \verb+UsersInterface+ e \verb+Booksinterface+ che permettono la comunicazione tramite java rmi. Le classi \verb+Library+ e \verb+Review+ sono utilizzate per la serializzazione in java rmi e la classe \verb+Util+ contiene metodi utilitari.
+
+\chapter{Pattern}
+Viene utilizzato il pattern MVC (Model View Controller). Il \verb+model+ è l'interazione da parte del server con il database, la \verb+view+ e rappresentata dal codice \verb+fxml+ e il \verb+controller+ e contenuto nel modulo \verb+client+. 
 \end{document}
