@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,6 +72,7 @@ public class Utils {
 
     /**
      * Reads the contents of a file and returns it as a list of strings.
+     *
      * @param <T> the type of the class we want to instatiate for the list.
      * @param filepath The path to the file to read.
      * @param f The predicate to filter the lines.
@@ -89,10 +92,10 @@ public class Utils {
 
     /**
      * Converts a map to a JSON string. The resulting JSON string will have keys
-     * enclosed in double quotes and values as either strings (if they are strings)
-     * or as raw values (if they are numbers or booleans).  Null values are
-     * represented as "null" in the JSON string.    
-     * 
+     * enclosed in double quotes and values as either strings (if they are
+     * strings) or as raw values (if they are numbers or booleans). Null values
+     * are represented as "null" in the JSON string.
+     *
      * @param map The map to convert to a JSON string.
      * @return The JSON string representation of the map.
      */
@@ -115,9 +118,11 @@ public class Utils {
     }
 
     /**
-     * Converts a JSON string to a map. The input JSON string should be in the format
-     * "{key1: value1, key2: value2, ...}". The resulting map will have keys as
-     * strings and values as either strings, integers, doubles, booleans, or null.
+     * Converts a JSON string to a map. The input JSON string should be in the
+     * format "{key1: value1, key2: value2, ...}". The resulting map will have
+     * keys as strings and values as either strings, integers, doubles,
+     * booleans, or null.
+     *
      * @param json The JSON string to convert to a map.
      * @return parsed key-value pairs.
      */
@@ -185,7 +190,8 @@ public class Utils {
 
     /**
      * Returns the current timestamp in the format "yyyy-MM-dd HH:mm:ss.SSS".
-     * @return  The current timestamp as a string.
+     *
+     * @return The current timestamp as a string.
      */
     private static String getCurrentTimestamp() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -194,6 +200,7 @@ public class Utils {
 
     /**
      * Logs a message to the console with a timestamp.
+     *
      * @param message The message to log.
      */
     public static void log(String message) {
@@ -202,6 +209,7 @@ public class Utils {
 
     /**
      * Counts the number of occurrences of a substring in a string.
+     *
      * @param str The string to search.
      * @param pattern The substring to count.
      * @return The number of occurrences of the substring in the string.
@@ -212,6 +220,7 @@ public class Utils {
 
     /**
      * Removes parentheses from a string.
+     *
      * @param str The string to remove parentheses from.
      * @return The string with parentheses removed.
      */
@@ -220,11 +229,11 @@ public class Utils {
     }
 
     /**
-     * Converts a string to a float.   
-     * 
+     * Converts a string to a float.
+     *
      * @param str The string to convert to a float.
      * @return The float value of the string.
-     * @throws Exception if the string cannot be converted to a float. 
+     * @throws Exception if the string cannot be converted to a float.
      */
     public static float stringToFloat(String str) throws Exception {
         return Float.parseFloat(str);
@@ -247,7 +256,7 @@ public class Utils {
     /**
      * Connects to a database using the specified URL, username, and password.
      *
-     * @param url  The URL of the database.
+     * @param url The URL of the database.
      * @param user The username for the database connection.
      * @param pass The password for the database connection.
      * @return A Connection object representing the database connection.
@@ -265,7 +274,7 @@ public class Utils {
      * Executes a SQL query on the specified database connection and returns the
      * result set.
      *
-     * @param c   The database connection to use.
+     * @param c The database connection to use.
      * @param sql The SQL query to execute.
      * @return A ResultSet object containing the results of the query.
      * @throws SQLException if an error occurs while executing the query.
@@ -281,6 +290,27 @@ public class Utils {
             }
 
         }
+    }
+
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+    /**
+     * Validates an email address against a predefined regex pattern.
+     *
+     * <p>
+     * This method checks if the provided email string matches the standard
+     * email format. It uses a regular expression to ensure that the email
+     * address contains a local part, an '@' symbol, a domain part, and a valid
+     * top-level domain.</p>
+     *
+     * @param email the email address to be validated
+     * @return {@code true} if the email address is valid; {@code false}
+     * otherwise
+     */
+    public static boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
 }

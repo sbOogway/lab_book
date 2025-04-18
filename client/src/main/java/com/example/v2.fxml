@@ -320,7 +320,7 @@
                   <TextField fx:id="emailSignup" prefHeight="35.0" text="" />
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="signupContainer" layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="password" />
                   <PasswordField fx:id="passwordSignup" prefHeight="35.0" text="" />
@@ -343,7 +343,7 @@
                   <TextField fx:id="userLogin" prefHeight="35.0" text="" />
                </children>
             </HBox>
-            <HBox layoutX="20.0" layoutY="37.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="loginContainer" layoutX="20.0" layoutY="37.0" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label prefHeight="35.0" prefWidth="75.0" text="password" />
                   <PasswordField fx:id="passwordLogin" prefHeight="35.0" text="" />

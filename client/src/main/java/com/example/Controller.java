@@ -5,6 +5,7 @@
  */
 package com.example;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
@@ -181,6 +182,10 @@ public class Controller {
     @FXML
     private Button buttonQueryTitleSugg;
 
+    @FXML 
+    private HBox loginContainer;
+    @FXML 
+    private HBox signupContainer;
     @FXML
     private Button yearQueryButton;
     @FXML
@@ -345,6 +350,9 @@ public class Controller {
 
                 } else {
                     System.out.println("failed login");
+                    Label error = new Label("wrong password or username");
+                    error.setStyle("-fx-text-fill: red;");
+                    loginContainer.getChildren().add(error);
                 }
 
             } catch (Exception ex) {
@@ -354,6 +362,16 @@ public class Controller {
 
         // signup
         submitSignup.setOnAction(e -> {
+            if (!Utils.isValidEmail(emailSignup.getText())) {
+                Label error = new Label("wrong email");
+                error.setStyle("-fx-text-fill: red;");
+                signupContainer.getChildren().add(error);
+                return;
+            } 
+
+            
+            
+
             try {
                 Client.users.add(
                         usernameSignup.getText(),
