@@ -40,8 +40,8 @@ import javafx.stage.Stage;
 public class Controller {
 
     // public static FXMLLoader loader = new FXMLLoader();
-    private boolean login = true;
-    private String user = "matia";
+    private boolean login; //= true;
+    private String user; //= "matia";
     // private int userid = 1;
     private String page = "home";
 
@@ -182,9 +182,9 @@ public class Controller {
     @FXML
     private Button buttonQueryTitleSugg;
 
-    @FXML 
+    @FXML
     private HBox loginContainer;
-    @FXML 
+    @FXML
     private HBox signupContainer;
     @FXML
     private Button yearQueryButton;
@@ -266,7 +266,6 @@ public class Controller {
         viewPage(buttonLibrary, vboxLibrary);
 
         // System.out.println("init controller");
-
         // query author year
         yearQueryButton.setOnAction(e -> {
             page = "query";
@@ -362,16 +361,23 @@ public class Controller {
 
         // signup
         submitSignup.setOnAction(e -> {
+            try {
+                signupContainer.getChildren().remove(3);
+            } catch (IndexOutOfBoundsException ex) {
+
+            }
             if (!Utils.isValidEmail(emailSignup.getText())) {
                 Label error = new Label("wrong email");
                 error.setStyle("-fx-text-fill: red;");
                 signupContainer.getChildren().add(error);
                 return;
-            } 
-
-            
-            
-
+            }
+            if (!Utils.isValidCodiceFiscale(codiceFiscaleSignup.getText())) {
+                Label error = new Label("wrong codice fiscale");
+                error.setStyle("-fx-text-fill: red;");
+                signupContainer.getChildren().add(error);
+                return;
+            }
             try {
                 Client.users.add(
                         usernameSignup.getText(),
@@ -517,6 +523,12 @@ public class Controller {
                 ex.printStackTrace();
             }
 
+            pages.forEach(el -> {
+                el.opacityProperty().set(0);
+            });
+            vboxLibrary.opacityProperty().set(1);
+            vboxLibrary.toFront();
+
         });
 
         // add review for a book
@@ -536,6 +548,12 @@ public class Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            pages.forEach(el -> {
+                el.opacityProperty().set(0);
+            });
+            vboxLibrary.opacityProperty().set(1);
+            vboxLibrary.toFront();
         });
 
         // add suggestions for a book
@@ -546,21 +564,21 @@ public class Controller {
             try {
                 book1 = booksToAddSugg.getItems().get(0).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
             } catch (Exception e) {
-                e.printStackTrace();
+                // e.printStackTrace();
                 book1 = null;
             }
 
             try {
                 book2 = booksToAddSugg.getItems().get(1).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
             } catch (Exception e) {
-                e.printStackTrace();
+                // e.printStackTrace();
                 book2 = null;
             }
 
             try {
                 book3 = booksToAddSugg.getItems().get(2).getChildren().get(0).toString().split("title:")[1].split("\n")[0].strip();
             } catch (Exception e) {
-                e.printStackTrace();
+                // e.printStackTrace();
                 book3 = null;
             }
             System.out.println(book1);
@@ -569,6 +587,12 @@ public class Controller {
                 Client.books.createSuggestion(user, book, book1, book2, book3);
             } catch (RemoteException ex) {
             }
+
+            pages.forEach(el -> {
+                el.opacityProperty().set(0);
+            });
+            vboxLibrary.opacityProperty().set(1);
+            vboxLibrary.toFront();
         });
     }
 
@@ -747,5 +771,4 @@ public class Controller {
     // public static FileInputStream getFxml(String name) throws FileNotFoundException {
     //     return new FileInputStream(Paths.get("resources", name).toString());
     // }
-
 }

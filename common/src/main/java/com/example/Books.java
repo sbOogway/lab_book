@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.postgresql.util.PSQLException;
+
 /**
- * Books interface for rmi allows communication between client and server for book related queries
+ * Books interface for rmi allows communication between client and server for
+ * book related queries
  */
 @SuppressWarnings("CallToPrintStackTrace")
 public class Books extends UnicastRemoteObject implements BooksInterface {
@@ -60,7 +63,7 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      * construct books object and read database
      *
      * @param dbUrl
-     * @param user 
+     * @param user
      * @param pass
      */
     public Books(String dbUrl, String user, String pass) throws RemoteException {
@@ -193,7 +196,8 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
         try (conn) {
             Utils.queryDB(conn, sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            // e.printStackTrace();
             return false;
         }
         readDatabase();
@@ -210,9 +214,8 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
      *
      * @param title The title of the book for which reviews are to be retrieved.
      * @return A list of `Review` objects containing the reviews for the
-     * specified book, or null if an error occurs during the database query. 
+     * specified book, or null if an error occurs during the database query.
      */
-       
     @Override
     @SuppressWarnings("CallToPrintStackTrace")
     public List<Review> getReviews(String title) {
@@ -226,7 +229,6 @@ public class Books extends UnicastRemoteObject implements BooksInterface {
             while (rs.next()) {
 
                 // System.out.println(rs.getString("userid"));
-
                 Review rev = new Review(
                         rs.getInt("stile"),
                         rs.getInt("contenuto"),

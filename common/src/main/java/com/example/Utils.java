@@ -285,7 +285,8 @@ public class Utils {
             try {
                 return stmt.executeQuery(sql);
             } catch (SQLException e) {
-                e.printStackTrace();
+
+                System.err.println(e.getMessage());
                 return null;
             }
 
@@ -293,7 +294,6 @@ public class Utils {
     }
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-
     /**
      * Validates an email address against a predefined regex pattern.
      *
@@ -313,4 +313,21 @@ public class Utils {
         return matcher.matches();
     }
 
+    private static final String CODICE_FISCALE_REGEX = "^[A-Z]{6}[0-9]{2}[ABCDEHLMPRST][0-9]{2}[A-Z0-9]{5}$";
+
+    /**
+     * Validates an Italian Codice Fiscale against a predefined regex pattern.
+     *
+     * <p>This method checks if the provided codice fiscale string matches the
+     * standard format. It ensures that the codice fiscale consists of 16 characters
+     * with the correct structure, including letters and digits as specified.</p>
+     *
+     * @param codiceFiscale the codice fiscale to be validated
+     * @return {@code true} if the codice fiscale is valid; {@code false} otherwise
+     */
+    public static boolean isValidCodiceFiscale(String codiceFiscale) {
+        Pattern pattern = Pattern.compile(CODICE_FISCALE_REGEX);
+        Matcher matcher = pattern.matcher(codiceFiscale);
+        return matcher.matches();
+    }
 }

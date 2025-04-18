@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Users interface for rmi allows communication between client and server for book related queries
+ * Users interface for rmi allows communication between client and server for
+ * book related queries
  */
 public class Users extends UnicastRemoteObject implements UsersInterface {
 
@@ -55,7 +56,6 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
                     // System.out.println(libri[0]);
                     // System.out.println(stream);
                     // System.out.println(stream.size());
-
                     Library lib = new Library(libs.getString("nome_libreria"), stream);
                     userLibs.add(lib);
 
@@ -63,7 +63,6 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
                 b.setLibrary(userLibs);
 
                 // System.out.println(userLibs);
-
                 add(b);
 
             }
@@ -130,11 +129,12 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
      * @param email
      * @param nome
      * @param cognome
-     * 
-     * @return boolean. success or not success 
+     *
+     * @return boolean. success or not success
      *
      */
     @Override
+    @SuppressWarnings("CallToPrintStackTrace")
     public boolean add(String userName, String password, String codiceFiscale, String email, String nome,
             String cognome) throws RemoteException {
         String sql = String.format(
@@ -144,9 +144,8 @@ public class Users extends UnicastRemoteObject implements UsersInterface {
         var conn = Utils.connect(this.dbUrl, this.user, this.pass);
         boolean f = true;
         try (conn) {
-            // System.out.println(Utils.queryDB(conn, sql));
-            // this.c = new ArrayList<>();
-            // readDatabase();
+            Utils.queryDB(conn, sql);
+            System.out.println("adding user to database");
 
         } catch (Exception e) {
             e.printStackTrace();
